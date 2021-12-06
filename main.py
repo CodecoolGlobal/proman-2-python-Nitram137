@@ -1,10 +1,11 @@
-from flask import Flask, render_template, url_for, session
+from flask import Flask, render_template, url_for, session, request, redirect
 from dotenv import load_dotenv
 
-
+import util
 from util import json_response
 import mimetypes
 import queires
+
 
 
 mimetypes.add_type('application/javascript', '.js')
@@ -19,6 +20,28 @@ def index():
     This is a one-pager which shows all the boards and cards
     """
     return render_template('index.html')
+
+
+@app.route("/registration", methods=["GET", "POST"])
+def registration():
+    if request.method == "GET":
+        return render_template('registration.html', username='Visitor')
+    elif request.method == "POST":
+        input_username = request.form.get('user_name')
+        input_firstname = request.form.get('first_name')
+        input_lastname = request.form.get('last_name')
+        input_email = request.form.get('email')
+        input_password = request.form.get('password')
+        password_hashed = util.hash_password(input_password)
+
+        queires.add_user = (input_username, input_firstname, input_lastname, input_email, password_hashed)
+
+        return redirect('/login')
+
+
+@app.route("/login")
+def login():
+    return render_template('login.html')
 
 
 @app.route("/api/boards")

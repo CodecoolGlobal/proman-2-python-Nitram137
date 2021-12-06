@@ -1,6 +1,16 @@
 import data_manager
 
 
+def add_user(input_username, input_firstname, input_lastname, input_email, password_hashed):
+    user = data_manager.execute_select(
+        f"""
+        INSERT INTO users (username, firstname, lastname, email, password_hashed)
+        VALUES ( %(un)S '{input_firstname}, {input_lastname}, {input_email}, {password_hashed}')
+        
+        """
+    )
+
+
 def get_card_status(status_id):
     """
     Find the first status matching the given id
