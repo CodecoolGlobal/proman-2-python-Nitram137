@@ -1,12 +1,15 @@
 export const htmlTemplates = {
     board: 1,
-    card: 2
+    status: 2,
+    card: 3
 }
 
 export function htmlFactory(template) {
     switch (template) {
         case htmlTemplates.board:
             return boardBuilder
+        case htmlTemplates.status:
+            return statusBuilder
         case htmlTemplates.card:
             return cardBuilder
         default:
@@ -20,6 +23,10 @@ function boardBuilder(board) {
                 <div class="board" data-board-id=${board.id}>${board.title}</div>
                 <button class="toggle-board-button" data-board-id="${board.id}">Show Cards</button>
             </div>`;
+}
+
+function statusBuilder(status) {
+    return `<div class="status" data-status-id="${status.id}">${status.title}</div>`
 }
 
 function cardBuilder(card) {
