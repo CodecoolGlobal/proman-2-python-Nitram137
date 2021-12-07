@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, session
+from flask import Flask, render_template, url_for, session, request
 from dotenv import load_dotenv
 
 
@@ -13,11 +13,14 @@ secret_key = "b'h45h3d"
 load_dotenv()
 
 
-@app.route("/")
+@app.route("/", methods=['GET', 'POST'])
 def index():
     """
     This is a one-pager which shows all the boards and cards
     """
+    if request.method == 'POST':
+        new_board_name = request.form['board-name-input']
+        queires.insert_new_board(new_board_name)
     return render_template('index.html')
 
 
