@@ -6,28 +6,69 @@
     <title>ProMan | Registration</title>
 </head>
 
-<body>
-    <div class="reg_form mb-3">
-        <div class="reg_header">
-            <h2>User registration</h2>
-        </div>
-        <form action="/registration.html" method="post">
-            <label for="inputUsername">User name:</label><br>
-            <input id="inputUsername" type="text" name="user_name" required oninvalid="this.setCustomValidity('Please fill all fields!')"><br><br>
-            <label for="inputFirstname">First name:</label><br>
-            <input id="inputFirstname" type="text" name="first_name" required oninvalid="this.setCustomValidity('Please fill all fields!')"><br><br>
-            <label for="inputLastname">Last name:</label><br>
-            <input id="inputLastname" type="text" name="last_name" required oninvalid="this.setCustomValidity('Please fill all fields!')"><br><br>
-            <label for="inputEmail">E-mail:</label><br>
-            <input id="inputEmail" type="email" name="email" required oninvalid="this.setCustomValidity('Please fill all fields!')"><br><br>
-            <label for="inputPassword">Password:</label><br>
-            <input id="inputPassword" type="password" name="password" required oninvalid="this.setCustomValidity('Please fill all fields!')"><br><br>
-            <button class="btn btn-primary" type="submit">Register</button>
-            <br><br>
-            <form action="/">
-                <button class='btn btn-primary' type="submit">Back</button>
+<body class="bg-secondary">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Proman (SP1)</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarText">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="{{ url_for('index') }}">Boards List</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Private Boards</a>
+                        </li>
+                        {% if 'username' not in session %}
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{{ url_for('registration') }}">Registration</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Logout</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                    {% if 'username' in session %}
+                    <span class="navbar-text">
+                        Signed in as {{ username }}
+                    </span>
+                    {% else %}
+                    <span class="navbar-text">
+                        {{ username }} please login!
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+
+    <div class="reg_form position-absolute top-50 start-50 translate-middle">
+        <div class="container-fluid text-center">
+            <div class="reg_header">
+                <h2>User registration</h2>
+            </div>
+            <br>
+            <p class="system_messages text-danger">{{ msg }}</p>
+            <br>
+            <form action="/registration" method="post">
+                <label for="inputUsername">User name:</label><br>
+                <input id="inputUsername" type="text" name="user_name" placeholder="JohnDoe13" required oninvalid="this.setCustomValidity('Please fill all fields!')"><br><br>
+                <label for="inputEmail">E-mail:</label><br>
+                <input id="inputEmail" type="email" name="email" placeholder="johndoe@unknown.com" required oninvalid="this.setCustomValidity('Please fill all fields!')"><br><br>
+                <label for="inputPassword">Password:</label><br>
+                <input id="inputPassword" type="password" name="password" required oninvalid="this.setCustomValidity('Please fill all fields!')"><br><br>
+                <button class="btn btn-primary" type="submit">Register</button>
+                <br><br>
+                <form action="/">
+                    <button class='btn btn-primary' type="submit">Back</button>
+                </form>
             </form>
-        </form>
+        </div>
     </div>
 </body>
 </html>
