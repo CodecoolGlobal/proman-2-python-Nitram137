@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, session
 from dotenv import load_dotenv
 
 
@@ -6,8 +6,10 @@ from util import json_response
 import mimetypes
 import queires
 
+
 mimetypes.add_type('application/javascript', '.js')
 app = Flask(__name__)
+secret_key = "b'h45h3d"
 load_dotenv()
 
 
