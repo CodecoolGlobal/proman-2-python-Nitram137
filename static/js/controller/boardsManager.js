@@ -15,11 +15,26 @@ export let boardsManager = {
         "click",
         showHideButtonHandler
       );
-    }
+      domManager.addEventListener(`.board[data-board-id="${board.id}"] span`, "click", boardTitleToInputHandler)
+  }
   },
 };
 
 function showHideButtonHandler(clickEvent) {
   const boardId = clickEvent.target.dataset.boardId;
   cardsManager.loadCards(boardId);
+}
+
+
+
+function boardTitleToInputHandler(clickEvent) {
+  const inputField = '  <input type="text" id="new-board-name" name="new-board-name">\n' +
+      '  <input type="submit" value="Rename">'
+  const boardTitleSpan = clickEvent.target
+
+  var form = document.createElement('form');
+  form.innerHTML = inputField
+  form.className = "board-title"
+  boardTitleSpan.parentNode.replaceChild(form, boardTitleSpan);
+
 }
