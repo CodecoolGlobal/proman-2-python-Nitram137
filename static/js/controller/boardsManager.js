@@ -15,7 +15,7 @@ export let boardsManager = {
         "click",
         showHideButtonHandler
       );
-      domManager.addEventListener(`.board[data-board-id="${board.id}"] span`, "click", boardTitleToInputHandler)
+      domManager.addEventListener(`.board[data-board-id="${board.id}"] span`, "click", function(e){boardTitleToInputHandler(e, `${board.title}` )})
   }
   },
 };
@@ -27,9 +27,8 @@ function showHideButtonHandler(clickEvent) {
 
 
 
-function boardTitleToInputHandler(clickEvent) {
-  const inputField = '  <input type="text" id="new-board-name" name="new-board-name">\n' +
-      '  <input type="submit" value="Rename">'
+function boardTitleToInputHandler(clickEvent, boardTitle) {
+  const inputField = `  <input type="text" id="new-board-name" name="new-board-name" value="${boardTitle}"><input type="submit" value="Rename">`
   const boardTitleSpan = clickEvent.target
 
   var form = document.createElement('form');
