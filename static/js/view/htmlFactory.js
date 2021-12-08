@@ -20,22 +20,20 @@ export function htmlFactory(template) {
 
 function boardBuilder(board) {
     return `
-    <div class="card">
-        <div class="card-header" id="headingOne">
-            <h5 class="mb-0">
-                <button class="btn btn-link toggle-board-button" data-toggle="collapse"
-                 data-target="#collapse-${board.id}" data-board-id="${board.id}"
-                 aria-expanded="true" aria-controls="collapseOne">
-                    Show Cards
-                </button>
-            </h5>
-        </div>
+    <div class="board card">
+        <button class="toggle-board-button" data-toggle="collapse" data-target="#collapse-${board.id}" 
+                data-board-id="${board.id}" aria-expanded="true">
+             <div class="card-header" id="heading-${board.id}">
+                 <h5 class="mb-0">
+                    ${board.title}
+                 </h5>
+             </div>
+        </button>
+    </div>
 
-        <div id="collapse-${board.id}" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-            <div class="card-body">
-                <div class="board" data-board-id=${board.id}>${board.title}</div>
-            </div>
-        </div>
+    <div id="collapse-${board.id}" class="collapse show" aria-labelledby="heading-${board.id}" data-parent="#accordion">
+        <div class="board" data-board-id=${board.id}></div>
+    </div>
     </div>`;
 }
 
