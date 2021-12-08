@@ -65,7 +65,8 @@ def get_statuses_for_board(board_id):
     matching_cards = data_manager.execute_select(
         """
         SELECT * FROM statuses
-        WHERE statuses.board_id = %(board_id)s
+        LEFT JOIN linkingboardstatus l on statuses.id = l.status_id
+        WHERE l.board_id = %(board_id)s
         ;
         """
         , {"board_id": board_id})

@@ -9,6 +9,7 @@ export let boardsManager = {
     const boards = await dataHandler.getBoards();
     for (let board of boards) {
       const boardBuilder = htmlFactory(htmlTemplates.board);
+      const statuses = await dataHandler.getStatuses(board.id);
       const content = boardBuilder(board);
       domManager.addChild("#root", content);
       domManager.addEventListener(
@@ -17,11 +18,6 @@ export let boardsManager = {
         showHideButtonHandler
       );
     }
-  },
-
-  loadStatuses: async function() {
-    const statuses = await dataHandler.getStatuses();
-    
   }
 };
 
