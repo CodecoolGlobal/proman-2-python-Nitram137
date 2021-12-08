@@ -50,7 +50,7 @@ def get_cards_for_board(board_id: int):
 def rename_board(board_id: int):
     if request.method == "PUT":
         body = request.json
-        return queires.insert_new_board(board_id, body['title'])
+        return queires.rename_board(board_id, body['title'])
 
 
 def main():

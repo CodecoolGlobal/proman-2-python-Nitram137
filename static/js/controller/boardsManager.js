@@ -23,7 +23,7 @@ export let boardsManager = {
 };
 
 function newBoardButtonHandler() {
-    domManager.addEventListener(".create-board-button", "click", boardNameInput)
+    domManager.addEventListener(".create-board-button", "click", getNewBoardName)
 }
 
 function showHideButtonHandler(clickEvent) {
@@ -31,23 +31,19 @@ function showHideButtonHandler(clickEvent) {
   cardsManager.loadCards(boardId);
 }
 
-function boardNameInput() {
-function boardTitleToInputHandler(clickEvent, boardTitle) {
-  const inputField = `  <input type="text" id="new-board-name" name="new-board-name" value="${boardTitle}"><button id="rename-btn">Rename</button>`
+function boardTitleToInputHandler(clickEvent, boardTitle, boardId) {
+  const inputField = `  <input type="text" id="new-board-name" name="new-board-name" value="${boardTitle}">`
   const boardTitleSpan = clickEvent.target
 
-  var form = document.createElement('form');
+  var form = document.createElement('div');
   form.innerHTML = inputField
   form.className = "board-title"
   boardTitleSpan.parentNode.replaceChild(form, boardTitleSpan);
   document.querySelector('#new-board-name').addEventListener('keypress', function (e) {
     if (e.key === 'Enter') {
-      console.log("test")
+      dataHandler.renameBoard(`${boardId}`, document.querySelector("#new-board-name").value)
     }
 });
-   /*dataHandler.renameBoard(`${boardId}`,document.querySelector("#new-board-name").value)*/
-}
-
 }
 
 function getNewBoardName() {
