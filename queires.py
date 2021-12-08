@@ -70,6 +70,21 @@ def insert_new_status(status_title, board_id):
     )
 
 
+def insert_new_card(card_title, board_id, status_id):
+    data_manager.execute_insert(
+        """
+        INSERT INTO cards(title, board_id, status_id, card_order)
+        VALUES(%(card_title)s, %(board_id)s, %(status_id)s, 3);"""
+        , {"card_title": card_title, "board_id": board_id, "status_id": status_id})
+
+    return data_manager.execute_select(
+        """
+        SELECT * FROM cards
+        where title = %(card_title)s and board_id = %(board_id)s and status_id = %(status_id)s
+        ;""", {"card_title": card_title, "board_id": board_id, "status_id": status_id}
+    )
+
+
 def insert_new_board(board_name):
     data_manager.execute_insert(
         """

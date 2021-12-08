@@ -61,6 +61,13 @@ def get_statuses(board_id: int):
     return queires.get_statuses_for_board(board_id)
 
 
+@app.route("/api/boards/<int:board_id>/statuses/<int:status_id>/cards", methods=['GET', 'PUT'])
+@json_response
+def cards_manager(status_id: int, board_id: int):
+    if request.method == 'PUT':
+        return queires.insert_new_card(request.json['cardTitle'], board_id, status_id)
+
+
 def main():
     app.run(debug=True)
 
