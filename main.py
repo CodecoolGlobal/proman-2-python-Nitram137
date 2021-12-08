@@ -27,8 +27,6 @@ def get_boards():
     """
     All the boards
     """
-
-
     return queires.get_boards()
 
 
@@ -48,10 +46,10 @@ def get_cards_for_board(board_id: int):
     return queires.get_cards_for_board(board_id)
 
 
-@app.route("/api/boards/statuses/")
+@app.route("/api/boards/<int:board_id>/statuses/")
 @json_response
-def get_statuses():
-    return queires.get_statuses()
+def get_statuses(board_id: int):
+    return queires.get_statuses_for_board(board_id)
 
 
 def main():
