@@ -21,18 +21,16 @@ export function htmlFactory(template) {
 function boardBuilder(board) {
     return `
     <div class="board card">
-        <button class="toggle-board-button" data-toggle="collapse" data-target="#collapse-${board.id}" 
-                data-board-id="${board.id}" aria-expanded="true">
-             <div class="card-header" id="heading-${board.id}">
-                 <h5 class="mb-0">
-                    ${board.title}
-                 </h5>
-             </div>
-        </button>
+    <a href="#collapse-${board.id}" data-toggle="collapse">
+         <div class="card-header" id="heading-${board.id}">
+             <h5 class="mb-0">
+                ${board.title}
+             </h5>
+         </div></a>
     </div>
 
-    <div id="collapse-${board.id}" class="collapse show" aria-labelledby="heading-${board.id}" data-parent="#accordion">
-        <div class="board" data-board-id="${board.id}">
+    <div id="collapse-${board.id}" class="collapse show">
+        <div class="board row" data-board-id=${board.id}>
             <input type="text" class="new-status-name" data-board-id="${board.id}">
             <button class="add-status" data-board-id="${board.id}">Add status</button>
         </div>
@@ -41,10 +39,8 @@ function boardBuilder(board) {
 
 function statusBuilder(status) {
     return `
-    <div class="status-header">
-        <h6>${status.title}</h6>
-     </div>
-    <div class="status" data-status-id="${status.id}">    
+    <div class="status col" data-status-id="${status.id}">    
+    <div class="status-header"><h6>${status.title}</h6></div>
     </div>`
 }
 
