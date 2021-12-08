@@ -7,11 +7,17 @@ import { statusesManager } from "./statusesManager.js";
 export let boardsManager = {
   loadBoards: async function () {
     const boards = await dataHandler.getBoards();
+    const boardBuilder = htmlFactory(htmlTemplates.board);
+    const statusBuilder = htmlFactory(htmlTemplates.status);
+
     for (let board of boards) {
-      const boardBuilder = htmlFactory(htmlTemplates.board);
-      const statuses = await dataHandler.getStatuses(board.id);
       const content = boardBuilder(board);
+      const statuses = await dataHandler.getStatuses(board.id);
       domManager.addChild("#root", content);
+      for (let status of statuses) {
+        const boardContent = statusBuilder(status);
+        domManager.addChild(`.board[data-board-id="${board.id}"]`, boardContent)
+      }
       domManager.addEventListener(
         `.toggle-board-button[data-board-id="${board.id}"]`,
         "click",
