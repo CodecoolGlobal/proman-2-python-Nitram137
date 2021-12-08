@@ -65,7 +65,7 @@ def insert_new_board(board_name):
 
 
 def rename_board(board_id, new_board_name):
-    return data_manager.execute_insert(
+    data_manager.execute_insert(
         """
         UPDATE boards
         SET title = %(new_board_name)s

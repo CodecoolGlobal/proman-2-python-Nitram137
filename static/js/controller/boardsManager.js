@@ -27,9 +27,13 @@ export let boardsManager = {
         }
       }
     }
+    inputButton();
   }
 };
 
+function inputButton(){
+    domManager.addEventListener('.create-board-button', 'click', getNewBoardName)
+}
 function boardTitleToInputHandler(clickEvent, boardTitle) {
   const inputField = `  <input type="text" id="new-board-name" name="new-board-name" value="${boardTitle}"><input type="submit" value="Rename">`
   const boardTitleSpan = clickEvent.target
@@ -45,18 +49,32 @@ function boardTitleToInputHandler(clickEvent, boardTitle) {
 });
 }
 
+
 function getNewBoardName() {
-  const buttonContainer = document.querySelector(".button-container");
-  const submitButton = document.createElement("button");
-  submitButton.setAttribute("type", "button");
-  submitButton.textContent = "Save";
-  const boardNameInput = document.createElement("input");
-  boardNameInput.setAttribute("id", "board-name-input");
-  boardNameInput.setAttribute("name", "board-name-input");
-  buttonContainer.appendChild(boardNameInput);
-  buttonContainer.appendChild(submitButton);
-  submitButton.addEventListener("click", () => {
-    console.log(boardNameInput.value)
-    dataHandler.createNewBoard(boardNameInput.value)
-  })
-}
+    const buttonContainer = document.querySelector(".button-container");
+    const submitButton = document.createElement("button");
+    submitButton.setAttribute("type", "button");
+    submitButton.textContent = "Save";
+    const boardBuilder = htmlFactory(htmlTemplates.board);
+    const boardNameInput = document.createElement("input");
+    boardNameInput.setAttribute("id", "board-name-input");
+    boardNameInput.setAttribute("name", "board-name-input");
+    buttonContainer.appendChild(boardNameInput);
+    buttonContainer.appendChild(submitButton);
+    submitButton.addEventListener("click", () => {
+      dataHandler.createNewBoard(boardNameInput.value)
+        buttonContainer.removeChild(boardNameInput)
+        buttonContainer.removeChild(submitButton)
+        const loadLastBoard = () => {
+          fetch("/api/boards", {
+              method: "GET",
+          }).then((response) => {
+              return response.json();
+            }).then((board) => {
+                const content = boardBuilder(board[board.length - 1]);
+                domManager.addChild("#root", content);
+          });
+        };
+      loadLastBoard();
+    })
+  }
