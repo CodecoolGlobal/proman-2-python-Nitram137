@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, session, request
+from flask import Flask, render_template, url_for, session, request, jsonify
 from dotenv import load_dotenv
 
 
@@ -18,19 +18,21 @@ def index():
     """
     This is a one-pager which shows all the boards and cards
     """
-    if request.method == 'POST':
-        new_board_name = request.form['board-name-input']
-        queires.insert_new_board(new_board_name)
     return render_template('index.html')
 
 
-@app.route("/api/boards")
+@app.route("/api/boards", methods=["GET", "POST", "PUT"])
 @json_response
 def get_boards():
-    """
-    All the boards
-    """
     return queires.get_boards()
+
+
+@app.route("/api/createBoard", methods=["GET", "POST", "PUT"])
+@json_response
+def create_new_board():
+    if request.method == "PUT":
+        body = request.json
+        return queires.insert_new_board(body['title'])
 
 
 @app.route("/api/boards/<int:board_id>/cards/")

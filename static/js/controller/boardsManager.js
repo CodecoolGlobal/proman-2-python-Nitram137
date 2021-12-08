@@ -21,7 +21,7 @@ export let boardsManager = {
 };
 
 function newBoardButtonHandler() {
-    domManager.addEventListener(".create-board-button", "click", getNewBoardName)
+    domManager.addEventListener(".create-board-button", "click", boardNameInput)
 }
 
 function showHideButtonHandler(clickEvent) {
@@ -29,18 +29,18 @@ function showHideButtonHandler(clickEvent) {
   cardsManager.loadCards(boardId);
 }
 
-function getNewBoardName() {
+function boardNameInput() {
   const buttonContainer = document.querySelector(".button-container");
-  const buttonForm = document.createElement("form");
-  buttonForm.setAttribute("method", "POST");
-  buttonForm.setAttribute("action", "/");
   const submitButton = document.createElement("button");
-  submitButton.setAttribute("type", "submit");
+  submitButton.setAttribute("type", "button");
   submitButton.textContent = "Save";
   const boardNameInput = document.createElement("input");
   boardNameInput.setAttribute("id", "board-name-input");
   boardNameInput.setAttribute("name", "board-name-input");
-  buttonContainer.appendChild(buttonForm);
-  buttonForm.appendChild(boardNameInput);
-  buttonForm.appendChild(submitButton);
+  buttonContainer.appendChild(boardNameInput);
+  buttonContainer.appendChild(submitButton);
+  submitButton.addEventListener("click", () => {
+    console.log(boardNameInput.value)
+    dataHandler.createNewBoard(boardNameInput.value)
+  })
 }
