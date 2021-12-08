@@ -1,12 +1,15 @@
 export const htmlTemplates = {
     board: 1,
-    card: 2
+    status: 2,
+    card: 3
 }
 
 export function htmlFactory(template) {
     switch (template) {
         case htmlTemplates.board:
             return boardBuilder
+        case htmlTemplates.status:
+            return statusBuilder
         case htmlTemplates.card:
             return cardBuilder
         default:
@@ -16,14 +19,26 @@ export function htmlFactory(template) {
 }
 
 function boardBuilder(board) {
-    return `<div class="board-container">
-                <div class="board" data-board-id=${board.id}>
-                    <div class="board-header">
-                        <span class="board-title">${board.title}</span>
-                        <button class="toggle-board-button" data-board-id="${board.id}">Show Cards</button>
-                    </div>
-                </div>
-            </div>`;
+    return `
+    <div class="board card">
+    <a href="#collapse-${board.id}" data-toggle="collapse">
+         <div class="card-header" id="heading-${board.id}">
+             <h5 class="mb-0">
+                ${board.title}
+             </h5>
+         </div></a>
+    </div>
+
+    <div id="collapse-${board.id}" class="collapse show">
+        <div class="board row" data-board-id=${board.id}></div>
+    </div>`;
+}
+
+function statusBuilder(status) {
+    return `
+    <div class="status col" data-status-id="${status.id}">    
+    <div class="status-header"><h6>${status.title}</h6></div>
+    </div>`
 }
 
 function cardBuilder(card) {
