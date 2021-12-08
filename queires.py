@@ -23,7 +23,6 @@ def get_boards():
     Gather all boards
     :return:
     """
-
     return data_manager.execute_select(
         """
         SELECT * FROM boards
@@ -33,7 +32,6 @@ def get_boards():
 
 
 def get_cards_for_board(board_id):
-
     matching_cards = data_manager.execute_select(
         """
         SELECT * FROM cards
@@ -52,3 +50,14 @@ def insert_new_board(board_name):
         INSERT INTO boards(title)
         VALUES(%(board_name)s);"""
         , {"board_name": board_name})
+
+
+def rename_board(board_id, new_board_name):
+    return data_manager.execute_insert(
+        """
+        UPDATE boards
+        SET title = %(new_board_name)s
+        WHERE id = %(board_id)s
+        ;
+        """,
+    {"board_id": board_id, "new_board_name": new_board_name})

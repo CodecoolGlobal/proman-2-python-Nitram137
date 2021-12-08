@@ -45,6 +45,12 @@ def get_cards_for_board(board_id: int):
     return queires.get_cards_for_board(board_id)
 
 
+@app.route("/api/boards/<int:board_id>/rename/")
+@json_response
+def rename_board(board_id: int):
+    return queires.rename_board(board_id, new_board_name)
+
+
 def main():
     app.run(debug=True)
 

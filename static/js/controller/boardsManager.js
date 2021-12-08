@@ -15,7 +15,9 @@ export let boardsManager = {
         "click",
         showHideButtonHandler
       );
-    }
+      domManager.addEventListener(`.board[data-board-id="${board.id}"] span`, "click", function(e){boardTitleToInputHandler(e, `${board.title}` )})
+
+  }
     newBoardButtonHandler()
   },
 };
@@ -30,6 +32,19 @@ function showHideButtonHandler(clickEvent) {
 }
 
 function boardNameInput() {
+function boardTitleToInputHandler(clickEvent, boardTitle) {
+  const inputField = `  <input type="text" id="new-board-name" name="new-board-name" value="${boardTitle}"><button id="rename-btn">Rename</button>`
+  const boardTitleSpan = clickEvent.target
+
+  var form = document.createElement('div');
+  form.innerHTML = inputField
+  form.className = "board-title"
+  boardTitleSpan.parentNode.replaceChild(form, boardTitleSpan);
+  domManager.addEventListener("#rename-btn", "click", console.log("test")/*dataHandler.renameBoard(`${board.id}`,document.querySelector("new-board-name[value]")*/ )
+
+}
+
+function getNewBoardName() {
   const buttonContainer = document.querySelector(".button-container");
   const submitButton = document.createElement("button");
   submitButton.setAttribute("type", "button");
