@@ -15,6 +15,7 @@ export let boardsManager = {
       const content = boardBuilder(board);
       domManager.addChild("#root", content);
       renameBoard(board.id, board.title)
+
       const statuses = await dataHandler.getStatuses(board.id);
       const cards = await dataHandler.getCardsByBoardId(board.id);
       for (let status of statuses) {
@@ -35,29 +36,7 @@ export let boardsManager = {
 
 function inputButton(){
     domManager.addEventListener('.create-board-button', 'click', getNewBoardName)
-}
-
-function renameBoard(boardId, boardTitle){
-  domManager.addEventListener(`.board[data-board-id="${boardId}"] span`, "click", function(e){boardTitleToInputToTitleHandler(e, `${boardTitle}`, `${boardId}` )})
-
-function boardTitleToInputToTitleHandler(clickEvent, boardTitle, boardId) {
-  const inputField = `<input type="text" id="new-board-name" name="new-board-name" value="${boardTitle}">`
-  const boardTitleSpan = clickEvent.target
-  const newDiv = document.createElement('span');
-  newDiv.innerHTML = inputField
-  newDiv.className = "board-title"
-  boardTitleSpan.parentNode.replaceChild(newDiv, boardTitleSpan);
-
-  document.querySelector('#new-board-name').addEventListener('keypress', function (e) {
-    if (e.key === 'Enter') {
-      const newBoardName = document.querySelector("#new-board-name").value
-      dataHandler.renameBoard(`${boardId}`, newBoardName)
-      e.target.parentNode.removeChild(e.target)
-      domManager.addChild(`.board[data-board-id="${boardId}"] .board-title`, `${newBoardName}`)
-    }
-});
-  }
-
+};
 
 function getNewBoardName() {
     const buttonContainer = document.querySelector(".button-container");
@@ -86,4 +65,30 @@ function getNewBoardName() {
         };
       loadLastBoard();
     })
-  }}
+  };
+
+
+function renameBoard(boardId) {
+    domManager.addEventListener(`#heading-${boardId} h5`, "click", function (e) {
+        boardTitleToInputToTitleHandler(e, `${boardId}`)
+    })
+}
+
+async function boardTitleToInputToTitleHandler(clickEvent, boardId) {
+    let boardTitle = clickEvent.target.innerText
+    const inputField = `<input type="text" id="new-board-name" name="new-board-name" value="${boardTitle}">`
+    const boardTitleText = clickEvent.target
+    const newDiv = document.createElement('h5');
+    newDiv.innerHTML = inputField
+    boardTitleText.parentNode.replaceChild(newDiv, boardTitleText);
+
+    document.querySelector('#new-board-name').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            const newBoardName = document.querySelector("#new-board-name").value
+            dataHandler.renameBoard(`${boardId}`, newBoardName)
+            e.target.parentNode.removeChild(e.target)
+            domManager.addChild(`#heading-${boardId} h5`, `${newBoardName}`)
+            renameBoard(`${boardId}`, `${boardTitle}`)
+        }
+    })
+}
