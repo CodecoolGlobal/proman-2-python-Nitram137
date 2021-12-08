@@ -6,9 +6,8 @@ export let dataHandler = {
   getBoard: async function (boardId) {
     // the board is retrieved and then the callback function is called with the board
   },
-  getStatuses: async function (statusId) {
-    // the statuses are retrieved and then the callback function is called with the statuses
-    const response = await apiGet(`/api/boards/statuses/`);
+  getStatuses: async function (boardId) {
+    const response = await apiGet(`/api/boards/${boardId}/statuses`);
     return response;
   },
   getStatus: async function (statusId) {
@@ -31,7 +30,7 @@ export let dataHandler = {
 
 async function apiGet(url) {
   let response = await fetch(url, {
-    method: "GET",
+    method: "GET"
   });
   if (response.status === 200) {
     let data = response.json();

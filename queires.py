@@ -50,3 +50,25 @@ def get_cards_for_board(board_id):
         , {"board_id": board_id})
 
     return matching_cards
+
+
+def insert_new_board(board_name):
+
+    data_manager.execute_insert(
+        """
+        INSERT INTO boards(title)
+        VALUES(%(board_name)s);"""
+        , {"board_name": board_name})
+
+
+def get_statuses_for_board(board_id):
+    matching_cards = data_manager.execute_select(
+        """
+        SELECT * FROM statuses
+        WHERE statuses.board_id = %(board_id)s
+        ;
+        """
+        , {"board_id": board_id})
+
+    return matching_cards
+

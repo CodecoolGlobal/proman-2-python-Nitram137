@@ -18,6 +18,11 @@ export let boardsManager = {
       );
     }
   },
+
+  loadStatuses: async function() {
+    const statuses = await dataHandler.getStatuses();
+    
+  }
 };
 
 function showHideButtonHandler(clickEvent) {

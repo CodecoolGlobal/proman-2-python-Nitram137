@@ -77,3 +77,26 @@ ALTER TABLE ONLY cards
 
 ALTER TABLE ONLY cards
     ADD CONSTRAINT fk_cards_status_id FOREIGN KEY (status_id) REFERENCES statuses(id);
+
+DROP TABLE IF EXISTS linkingBoardStatus;
+
+CREATE TABLE linkingBoardStatus (
+    id          SERIAL PRIMARY KEY  NOT NULL,
+    board_id    INTEGER             NOT NULL,
+    status_id   INTEGER             NOT NULL
+);
+
+ALTER TABLE ONLY linkingBoardStatus
+    ADD CONSTRAINT fk_linkingBoardStatus_status_id FOREIGN KEY (status_id) REFERENCES statuses(id);
+
+ALTER TABLE ONLY linkingBoardStatus
+    ADD CONSTRAINT fk_linkingBoardStatus_board_id FOREIGN KEY (board_id) REFERENCES boards(id);
+
+INSERT INTO linkingBoardStatus VALUES (1, 1, 1);
+INSERT INTO linkingBoardStatus VALUES (2, 1, 2);
+INSERT INTO linkingBoardStatus VALUES (3, 1, 3);
+INSERT INTO linkingBoardStatus VALUES (4, 1, 4);
+INSERT INTO linkingBoardStatus VALUES (5, 2, 1);
+INSERT INTO linkingBoardStatus VALUES (6, 2, 2);
+INSERT INTO linkingBoardStatus VALUES (7, 2, 3);
+INSERT INTO linkingBoardStatus VALUES (8, 2, 4);
