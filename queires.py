@@ -50,3 +50,14 @@ def insert_new_board(board_name):
         INSERT INTO boards(title)
         VALUES(%(board_name)s);"""
         , {"board_name": board_name})
+
+
+def rename_board(board_id, new_board_name):
+    return data_manager.execute_insert(
+        """
+        UPDATE boards
+        SET title = %(new_board_name)s
+        WHERE id = %(board_id)s
+        ;
+        """,
+    {"board_id": board_id, "new_board_name": new_board_name})
