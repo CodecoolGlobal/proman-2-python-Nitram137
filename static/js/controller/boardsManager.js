@@ -17,6 +17,7 @@ export let boardsManager = {
         "click",
         showHideButtonHandler
       );
+      domManager.addEventListener(`.board[data-board-id="${board.id}"] span`, "click", function(e){boardTitleToInputHandler(e, `${board.title}` )})
     }
   }
 };
@@ -25,4 +26,17 @@ function showHideButtonHandler(clickEvent) {
   const boardId = clickEvent.target.dataset.boardId;
   statusesManager.loadStatuses(boardId)
   cardsManager.loadCards(boardId);
+}
+
+
+
+function boardTitleToInputHandler(clickEvent, boardTitle) {
+  const inputField = `  <input type="text" id="new-board-name" name="new-board-name" value="${boardTitle}"><input type="submit" value="Rename">`
+  const boardTitleSpan = clickEvent.target
+
+  let form = document.createElement('form');
+  form.innerHTML = inputField
+  form.className = "board-title"
+  boardTitleSpan.parentNode.replaceChild(form, boardTitleSpan);
+
 }
