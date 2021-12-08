@@ -33,7 +33,6 @@ function boardBuilder(board) {
 
     <div id="collapse-${board.id}" class="collapse show" aria-labelledby="heading-${board.id}" data-parent="#accordion">
         <div class="board" data-board-id=${board.id}></div>
-    </div>
     </div>`;
 }
 
