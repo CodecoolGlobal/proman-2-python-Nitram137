@@ -33,7 +33,7 @@ function boardBuilder(board) {
 
         <div id="collapse-${board.id}" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
             <div class="card-body">
-                <div class="board" data-board-id=${board.id}>${board.title}</div>
+                <div class="board" data-board-id="${board.id}">${board.title}</div>
             </div>
         </div>
     </div>`;
