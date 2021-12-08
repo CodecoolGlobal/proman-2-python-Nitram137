@@ -52,13 +52,15 @@ async function apiPost(url, payload) {}
 async function apiDelete(url) {}
 
 async function apiPut(url, payload) {
-  let upload = await fetch(url, {
+  let response = await fetch(url, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json"
     },
     body: JSON.stringify(payload)
   });
-  console.log(upload)
-  return upload;
+  if (response.ok) {
+    let data = response.json()
+    return data;
+  }
 }

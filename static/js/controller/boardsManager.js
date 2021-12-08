@@ -38,7 +38,10 @@ async function addStatusToBoard(boardId) {
   const inputText = document.querySelector(`.new-status-name[data-board-id="${boardId}"]`);
   const statusTitle = inputText.value;
   if (statusTitle !== '') {
-    await dataHandler.createNewStatus(statusTitle, boardId);
+    const newStatus = await dataHandler.createNewStatus(statusTitle, boardId);
+    const statusBuilder = htmlFactory(htmlTemplates.status);
+    const statusHTML = statusBuilder(newStatus[0]);
+    domManager.addChild(`.board[data-board-id="${boardId}"]`, statusHTML);
   }
 }
 
