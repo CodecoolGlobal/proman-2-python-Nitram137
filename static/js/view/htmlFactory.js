@@ -37,7 +37,12 @@ function boardBuilder(board) {
 }
 
 function statusBuilder(status) {
-    return `<div class="status" data-status-id="${status.id}">${status.title}</div>`
+    return `
+    <div class="status-header">
+        <h6>${status.title}</h6>
+     </div>
+    <div class="status" data-status-id="${status.id}">    
+    </div>`
 }
 
 function cardBuilder(card) {
