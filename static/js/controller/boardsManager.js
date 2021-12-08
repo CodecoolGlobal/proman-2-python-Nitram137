@@ -15,7 +15,7 @@ export let boardsManager = {
         "click",
         showHideButtonHandler
       );
-      domManager.addEventListener(`.board[data-board-id="${board.id}"] span`, "click", function(e){boardTitleToInputHandler(e, `${board.title}` )})
+      domManager.addEventListener(`.board[data-board-id="${board.id}"] span`, "click", function(e){boardTitleToInputHandler(e, `${board.title}`, `${board.id}` )})
 
   }
   },
@@ -28,14 +28,22 @@ function showHideButtonHandler(clickEvent) {
 
 
 
-function boardTitleToInputHandler(clickEvent, boardTitle) {
-  const inputField = `  <input type="text" id="new-board-name" name="new-board-name" value="${boardTitle}"><button id="rename-btn">Rename</button>`
+function boardTitleToInputHandler(clickEvent, boardTitle, boardId) {
+  const inputField = `  <input type="text" id="new-board-name" name="new-board-name" value="${boardTitle}"><input type="submit" id="rename-btn" value="Rename">`
   const boardTitleSpan = clickEvent.target
 
-  var form = document.createElement('div');
+  var form = document.createElement('form');
   form.innerHTML = inputField
   form.className = "board-title"
   boardTitleSpan.parentNode.replaceChild(form, boardTitleSpan);
-  domManager.addEventListener("#rename-btn", "click", console.log("test")/*dataHandler.renameBoard(`${board.id}`,document.querySelector("new-board-name[value]")*/ )
+  document.querySelector('#new-board-name').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+      console.log("test")
+    }
+});
+   /*dataHandler.renameBoard(`${boardId}`,document.querySelector("#new-board-name").value)*/
+}
 
+async function rename(boardId) {
+  newBoardName = await dataHandler.renameBoard(`${boardId}`, document.querySelector('#new-board-name').value)
 }

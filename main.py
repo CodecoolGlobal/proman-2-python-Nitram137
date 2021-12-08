@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, session
+from flask import Flask, render_template, url_for, request, session
 from dotenv import load_dotenv
 
 
@@ -40,10 +40,12 @@ def get_cards_for_board(board_id: int):
     return queires.get_cards_for_board(board_id)
 
 
-@app.route("/api/boards/<int:board_id>/rename/")
+@app.route("/api/boards/<int:board_id>/rename/", methods=['GET', 'POST'])
 @json_response
 def rename_board(board_id: int):
-    return queires.rename_board(board_id, new_board_name)
+    if request.method == "POST":
+        new_board_name = request.form['new-board-name']
+        return queires.rename_board(board_id, new_board_name)
 
 
 def main():

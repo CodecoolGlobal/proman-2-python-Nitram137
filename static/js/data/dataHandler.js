@@ -26,8 +26,8 @@ export let dataHandler = {
     // creates new card, saves it and calls the callback function with its data
   },
   renameBoard: async function (boardId, newBoardName) {
-    const data = {"board_id": boardId, "new_board_name": newBoardName}
-    const response = await apiGet(`/api/boards/${boardId}/rename/`, data);
+    const data = {"board_id": boardId}
+    const response = await apiPut(`/api/boards/${boardId}/rename/`);
     return response;
   },
 };
@@ -47,12 +47,6 @@ async function apiPost(url, payload) {}
 async function apiDelete(url) {}
 
 async function apiPut(url, payload) {
-  let response = await fetch(url, {
-    method: "PUT",
-    body: JSON.stringify({payload})
-  });
-  if (response.ok) {
-    let data = response.json();
-    return data;
-  }
+
+
 }
