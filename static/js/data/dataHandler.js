@@ -24,6 +24,10 @@ export let dataHandler = {
     const payLoad = {title: boardTitle};
     await apiPut("/api/createBoard", payLoad);
   },
+  createNewStatus: async function (statusTitle, boardId) {
+    const response = await apiPut(`/api/boards/${boardId}/statuses`, {statusTitle: statusTitle});
+    return response;
+  },
   createNewCard: async function (cardTitle, boardId, statusId) {
     // creates new card, saves it and calls the callback function with its data
   },

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, session, request, jsonify
+from flask import Flask, render_template, url_for, session, request
 from dotenv import load_dotenv
 
 
@@ -35,12 +35,6 @@ def create_new_board():
         return queires.insert_new_board(body['title'])
 
 
-@app.route("/api/boards/<int:board_id>/statuses")
-@json_response
-def get_statuses_for_board(board_id: int):
-    return queires.get_statuses_for_board(board_id)
-
-
 @app.route("/api/boards/<int:board_id>/cards/")
 @json_response
 def get_cards_for_board(board_id: int):
@@ -57,6 +51,14 @@ def rename_board(board_id: int):
     if request.method == "PUT":
         body = request.json
         return queires.rename_board(board_id, body['title'])
+
+
+@app.route("/api/boards/<int:board_id>/statuses/", methods=['GET', 'PUT'])
+@json_response
+def get_statuses(board_id: int):
+    if request.method == 'PUT':
+        return queires.insert_new_status(request.json['statusTitle'], board_id)
+    return queires.get_statuses_for_board(board_id)
 
 
 def main():

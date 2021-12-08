@@ -32,7 +32,10 @@ function boardBuilder(board) {
     </div>
 
     <div id="collapse-${board.id}" class="collapse show" aria-labelledby="heading-${board.id}" data-parent="#accordion">
-        <div class="board" data-board-id=${board.id}></div>
+        <div class="board" data-board-id="${board.id}">
+            <input type="text" class="new-status-name" data-board-id="${board.id}">
+            <button class="add-status" data-board-id="${board.id}">Add status</button>
+        </div>
     </div>`;
 }
 

@@ -55,8 +55,15 @@ def get_statuses_for_board(board_id):
     return matching_cards
 
 
-def insert_new_board(board_name):
+def insert_new_status(status_title, board_id):
+    data_manager.execute_insert(
+        """
+        INSERT INTO statuses(title, board_id)
+        VALUES(%(status_title)s, %(board_id)s);"""
+        , {"status_title": status_title, "board_id": board_id})
 
+
+def insert_new_board(board_name):
     data_manager.execute_insert(
         """
         INSERT INTO boards(title)

@@ -26,9 +26,25 @@ export let boardsManager = {
           }
         }
       }
+      domManager.addEventListener(
+          `.add-status[data-board-id="${board.id}"]`,
+          "click", ()=>{
+          addStatusToBoard(board.id)});
     }
   }
 };
+
+async function addStatusToBoard(boardId) {
+  const inputText = document.querySelector(`.new-status-name[data-board-id="${boardId}"]`);
+  const statusTitle = inputText.value;
+  if (statusTitle !== '') {
+    await dataHandler.createNewStatus(statusTitle, boardId);
+  }
+}
+
+function addCardToStatus(status_id) {
+
+}
 
 function boardTitleToInputHandler(clickEvent, boardTitle) {
   const inputField = `  <input type="text" id="new-board-name" name="new-board-name" value="${boardTitle}"><input type="submit" value="Rename">`
