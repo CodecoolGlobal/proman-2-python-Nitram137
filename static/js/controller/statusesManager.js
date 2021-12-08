@@ -4,7 +4,7 @@ import { domManager } from "../view/domManager.js";
 
 export let statusesManager = {
   loadStatuses: async function (boardId) {
-    const statuses = await dataHandler.getStatuses(statusId);
+    const statuses = await dataHandler.getStatuses(boardId);
     for (let status of statuses) {
       const statusBuilder = htmlFactory(htmlTemplates.status);
       const content = statusBuilder(status);

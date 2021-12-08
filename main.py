@@ -40,10 +40,10 @@ def get_cards_for_board(board_id: int):
     return queires.get_cards_for_board(board_id)
 
 
-@app.route("/api/boards/<int:status_id>/statuses/")
+@app.route("/api/boards/statuses/")
 @json_response
-def get_statuses(status_id: int):
-    return queires.get_card_status(status_id)
+def get_statuses():
+    return queires.get_statuses()
 
 
 def main():
