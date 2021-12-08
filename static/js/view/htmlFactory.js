@@ -32,16 +32,14 @@ function boardBuilder(board) {
     </div>
 
     <div id="collapse-${board.id}" class="collapse show" aria-labelledby="heading-${board.id}" data-parent="#accordion">
-        <div class="board" data-board-id=${board.id}></div>
+        <div class="board row" data-board-id=${board.id}></div>
     </div>`;
 }
 
 function statusBuilder(status) {
     return `
-    <div class="status-header">
-        <h6>${status.title}</h6>
-     </div>
-    <div class="status" data-status-id="${status.id}">    
+    <div class="status col" data-status-id="${status.id}">    
+    <div class="status-header"><h6>${status.title}</h6></div>
     </div>`
 }
 
