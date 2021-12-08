@@ -7,28 +7,28 @@ import { statusesManager } from "./statusesManager.js";
 export let boardsManager = {
   loadBoards: async function () {
     const boards = await dataHandler.getBoards();
+    const boardBuilder = htmlFactory(htmlTemplates.board);
+    const statusBuilder = htmlFactory(htmlTemplates.status);
+    const cardBuilder = htmlFactory(htmlTemplates.card);
+
     for (let board of boards) {
-      const boardBuilder = htmlFactory(htmlTemplates.board);
-      const statuses = await dataHandler.getStatuses(board.id);
       const content = boardBuilder(board);
       domManager.addChild("#root", content);
-      domManager.addEventListener(
-        `.toggle-board-button[data-board-id="${board.id}"]`,
-        "click",
-        showHideButtonHandler
-      );
-      domManager.addEventListener(`.board[data-board-id="${board.id}"] span`, "click", function(e){boardTitleToInputHandler(e, `${board.title}` )})
+      const statuses = await dataHandler.getStatuses(board.id);
+      const cards = await dataHandler.getCardsByBoardId(board.id);
+      for (let status of statuses) {
+        const boardContent = statusBuilder(status);
+        domManager.addChild(`.board[data-board-id="${board.id}"]`, boardContent);
+        for (let card of cards) {
+          if (card.status_id === status.id) {
+            const statusContent = cardBuilder(card);
+            domManager.addChild(`.status[data-status-id="${status.id}"]`, statusContent);
+          }
+        }
+      }
     }
   }
 };
-
-function showHideButtonHandler(clickEvent) {
-  const boardId = clickEvent.target.dataset.boardId;
-  statusesManager.loadStatuses(boardId)
-  cardsManager.loadCards(boardId);
-}
-
-
 
 function boardTitleToInputHandler(clickEvent, boardTitle) {
   const inputField = `  <input type="text" id="new-board-name" name="new-board-name" value="${boardTitle}"><input type="submit" value="Rename">`
