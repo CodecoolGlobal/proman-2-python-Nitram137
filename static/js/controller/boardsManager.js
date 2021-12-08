@@ -15,11 +15,12 @@ export let boardsManager = {
         "click",
         showHideButtonHandler
       );
-      domManager.addEventListener(`.board[data-board-id="${board.id}"] span`, "click", function(e){boardTitleToInputHandler(e, `${board.title}`, `${board.id}` )})
+      renameBoard(board.id, board.title)
 
   }
     newBoardButtonHandler()
   },
+
 };
 
 function newBoardButtonHandler() {
@@ -31,20 +32,31 @@ function showHideButtonHandler(clickEvent) {
   cardsManager.loadCards(boardId);
 }
 
-function boardTitleToInputHandler(clickEvent, boardTitle, boardId) {
-  const inputField = `  <input type="text" id="new-board-name" name="new-board-name" value="${boardTitle}">`
-  const boardTitleSpan = clickEvent.target
+function renameBoard(boardId, boardTitle){
+  domManager.addEventListener(`.board[data-board-id="${boardId}"] span`, "click", function(e){boardTitleToInputToTitleHandler(e, `${boardTitle}`, `${boardId}` )})
 
-  var form = document.createElement('div');
-  form.innerHTML = inputField
-  form.className = "board-title"
-  boardTitleSpan.parentNode.replaceChild(form, boardTitleSpan);
+}
+
+function boardTitleToInputToTitleHandler(clickEvent, boardTitle, boardId) {
+  const inputField = `<input type="text" id="new-board-name" name="new-board-name" value="${boardTitle}">`
+  const boardTitleSpan = clickEvent.target
+  var newDiv = document.createElement('span');
+  newDiv.innerHTML = inputField
+  newDiv.className = "board-title"
+  boardTitleSpan.parentNode.replaceChild(newDiv, boardTitleSpan);
+
   document.querySelector('#new-board-name').addEventListener('keypress', function (e) {
     if (e.key === 'Enter') {
-      dataHandler.renameBoard(`${boardId}`, document.querySelector("#new-board-name").value)
+      console.log(e)
+      const newBoardName = document.querySelector("#new-board-name").value
+      dataHandler.renameBoard(`${boardId}`, newBoardName)
+      e.target.parentNode.removeChild(e.target)
+      domManager.addChild(`.board[data-board-id="${boardId}"] .board-title`, `${newBoardName}`)
+
     }
 });
 }
+
 
 function getNewBoardName() {
   const buttonContainer = document.querySelector(".button-container");
