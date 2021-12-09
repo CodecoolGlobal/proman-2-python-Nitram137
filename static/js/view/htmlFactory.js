@@ -21,12 +21,12 @@ export function htmlFactory(template) {
 function boardBuilder(board) {
     return `
     <div class="board card">
-    <a href="#collapse-${board.id}" data-toggle="collapse">
-         <div class="card-header" id="heading-${board.id}">
-             <h5 class="mb-0">
-                ${board.title}
-             </h5>
-         </div></a>
+        <a href="#collapse-${board.id}" data-toggle="collapse">
+             <div class="card-header inline" id="heading-${board.id}">
+                 <h5 class="mb-0">${board.title}</h5>
+                 <button style="display: none" type="button" id="save-board-btn-${board.id}" class="btn btn-secondary">Save</button>
+             </div>
+        </a>
     </div>
 
     <div id="collapse-${board.id}" class="collapse show">
@@ -42,7 +42,7 @@ function statusBuilder(status) {
     <div class="status col" data-status-id="${status.id}">    
         <div class="status-header"><h6>${status.title}</h6></div>
         <input type="text" class="new-card-name" data-status-id="${status.id}">
-        <button class="add-card" data-status-id="${status.id}">Add status</button>
+        <button class="add-card" data-status-id="${status.id}">Add card</button>
     </div>`
 }
 
