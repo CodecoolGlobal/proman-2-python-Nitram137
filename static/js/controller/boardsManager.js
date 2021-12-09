@@ -25,6 +25,7 @@ export let boardsManager = {
             const statusContent = cardBuilder(card);
             domManager.addChild(`.status[data-status-id="${status.id}"]`, statusContent);
           }
+          cardsManager.renameCard(card.id);
         }
         domManager.addEventListener(
             `.add-card[data-status-id="${status.id}"]`,
@@ -116,7 +117,7 @@ function renameBoard(boardId) {
     })
 }
 
-async function boardTitleToInputToTitleHandler(clickEvent, boardId) {
+function boardTitleToInputToTitleHandler(clickEvent, boardId) {
     let oldBoardTitle = clickEvent.target.innerText
     const inputField = `<input type="text" id="new-board-name" name="new-board-name" value="${oldBoardTitle}">`
     const boardTitleText = clickEvent.target
@@ -125,17 +126,13 @@ async function boardTitleToInputToTitleHandler(clickEvent, boardId) {
     boardTitleText.parentNode.replaceChild(newDiv, boardTitleText);
 
     document.querySelector('#new-board-name').addEventListener('keypress', function (e) {
+        const clickEventInputField = e.target
         if (e.key === 'Enter') {
             const newBoardName = document.querySelector("#new-board-name").value
             dataHandler.renameBoard(`${boardId}`, newBoardName)
-            e.target.parentNode.removeChild(e.target)
+            clickEventInputField.parentNode.removeChild(clickEventInputField)
             domManager.addChild(`#heading-${boardId} h5`, `${newBoardName}`)
             renameBoard(`${boardId}`)
-        }else if (window.onclick){
-            e.target.parentNode.removeChild(e.target)
-            domManager.addChild(`#heading-${boardId} h5`, `${oldBoardTitle}`)
-            renameBoard(`${boardId}`)
-
         }
     })
 }

@@ -127,3 +127,14 @@ def rename_board(board_id, new_board_name):
         ;
         """,
     {"board_id": board_id, "new_board_name": new_board_name})
+
+
+def rename_card(card_id, new_card_name):
+    data_manager.execute_insert(
+        """
+        UPDATE cards
+        SET title = %(new_card_name)s
+        WHERE id = %(card_id)s
+        ;
+        """,
+    {"card_id": card_id, "new_card_name": new_card_name})

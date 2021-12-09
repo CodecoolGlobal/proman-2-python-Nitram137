@@ -88,7 +88,7 @@ def get_cards_for_board(board_id: int):
     return queires.get_cards_for_board(board_id)
 
 
-@app.route("/api/boards/<int:board_id>/rename/", methods=['GET', 'POST', 'PUT'])
+@app.route("/api/boards/<int:board_id>/rename/", methods=['GET', 'PUT'])
 @json_response
 def rename_board(board_id: int):
     if request.method == "PUT":
@@ -109,6 +109,14 @@ def get_statuses(board_id: int):
 def cards_manager(status_id: int, board_id: int):
     if request.method == 'PUT':
         return queires.insert_new_card(request.json['cardTitle'], board_id, status_id)
+
+
+@app.route("/api/cards/<int:card_id>/rename/", methods=['GET', 'PUT'])
+@json_response
+def rename_card(card_id: int):
+    if request.method == "PUT":
+        body = request.json
+        return queires.rename_card(card_id, body['title'])
 
 
 def main():

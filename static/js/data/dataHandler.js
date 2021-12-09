@@ -39,6 +39,10 @@ export let dataHandler = {
     const payLoad = {title: newBoardName};
     await apiPut(`/api/boards/${boardId}/rename/`, payLoad);
   },
+  renameCard: async function (cardId, newCardName) {
+    const payLoad = {title: newCardName};
+    await apiPut(`/api/cards/${cardId}/rename/`, payLoad);
+  },
 };
 
 async function apiGet(url) {
