@@ -16,8 +16,7 @@ export let boardsManager = {
       const statuses = await dataHandler.getStatuses(board.id);
       const cards = await dataHandler.getCardsByBoardId(board.id);
       for (let status of statuses) {
-        const boardContent = statusBuilder(status);
-        domManager.addChild(`.board[data-board-id="${board.id}"]`, boardContent);
+        await statusesManager.addStatusToBoard(board.id, status.title);
         for (let card of cards) {
           if (card.status_id === status.id) {
             await cardsManager.addCardToStatus(board.id, status.id, card.title)
