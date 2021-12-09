@@ -107,35 +107,25 @@ function getNewBoardName() {
     })
   }
 
-
-function renameBoard(boardId) {
-    domManager.addEventListener(`#heading-${boardId} h5`, "click", function (e)
-    {if (!document.querySelector("#new-board-name")){
-        boardTitleToInputToTitleHandler(e, `${boardId}`)
+function renameBoard(boardId, boardTitle) {
+    domManager.addEventListener(`#heading-${boardId} h5`, "click",  (e) => {
+        if (!document.querySelector("#new-board-name")){
+            boardTitleToInputToTitleHandler(e, boardId, boardTitle);
         }
     })
 }
 
-async function boardTitleToInputToTitleHandler(clickEvent, boardId) {
-    let oldBoardTitle = clickEvent.target.innerText
-    const inputField = `<input type="text" id="new-board-name" name="new-board-name" value="${oldBoardTitle}">`
-    const boardTitleText = clickEvent.target
-    const newDiv = document.createElement('h5');
-    newDiv.innerHTML = inputField
-    boardTitleText.parentNode.replaceChild(newDiv, boardTitleText);
+function boardTitleToInputToTitleHandler(clickEvent, boardId, boardTitle ) {
+    const boardTitleText = document.querySelector(`#heading-${boardId} h5`);
+    const saveBtn = document.querySelector(`#save-board-btn-${boardId}`);
+    boardTitleText.innerHTML = `<input type="text" id="new-board-name" name="new-board-name" value="${boardTitle}">`;
+    saveBtn.style.display = "flex";
 
-    document.querySelector('#new-board-name').addEventListener('keypress', function (e) {
-        if (e.key === 'Enter') {
-            const newBoardName = document.querySelector("#new-board-name").value
-            dataHandler.renameBoard(`${boardId}`, newBoardName)
-            e.target.parentNode.removeChild(e.target)
-            domManager.addChild(`#heading-${boardId} h5`, `${newBoardName}`)
-            renameBoard(`${boardId}`)
-        }else if (window.onclick){
-            e.target.parentNode.removeChild(e.target)
-            domManager.addChild(`#heading-${boardId} h5`, `${oldBoardTitle}`)
-            renameBoard(`${boardId}`)
-
-        }
+    saveBtn.addEventListener("click", () => {
+        boardTitle = document.querySelector("#new-board-name").value;
+        dataHandler.renameBoard(boardId, boardTitle);
+        boardTitleText.innerHTML = `${boardTitle}`;
+        saveBtn.style.display = "none";
+        renameBoard(boardId, boardTitle);
     })
 }
