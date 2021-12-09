@@ -1,9 +1,10 @@
+DROP TABLE IF EXISTS users;
 create table users
 (
 	id serial,
 	username varchar(50) not null,
 	email varchar(100) not null,
-	password_hashed varchar(50) not null
+	password_hashed varchar(256) not null
 );
 
 create unique index users_email_uindex
