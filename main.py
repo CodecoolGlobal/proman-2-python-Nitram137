@@ -41,7 +41,7 @@ def login():
         current_user = queires.login_user(request.form['user_name'])
         input_password = request.form['user_password']
         if len(current_user) > 0:
-            if current_user[0]['username'] != None and util.verify_password(input_password, current_user[0]['password_hashed']):
+            if current_user[0]['username'] is None and util.verify_password(input_password, current_user[0]['password_hashed']):
                 session['username'] = current_user[0]['username']
                 return redirect('/')
             else:
