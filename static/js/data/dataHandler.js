@@ -27,8 +27,13 @@ export let dataHandler = {
     const payLoad = {id: newBoardId, title: boardTitle};
     return await apiPut("/api/createBoard", payLoad);
   },
+  createNewStatus: async function (statusTitle, boardId) {
+    const response = await apiPut(`/api/boards/${boardId}/statuses`, {statusTitle: statusTitle});
+    return response;
+  },
   createNewCard: async function (cardTitle, boardId, statusId) {
-    // creates new card, saves it and calls the callback function with its data
+    const response = await apiPut(`/api/boards/${boardId}/statuses/${statusId}/cards`, {cardTitle: cardTitle});
+    return response;
   },
   renameBoard: async function (boardId, newBoardName) {
     const payLoad = {title: newBoardName};
@@ -51,12 +56,15 @@ async function apiPost(url, payload) {}
 async function apiDelete(url) {}
 
 async function apiPut(url, payload) {
-  let upload = await fetch(url, {
+  let response = await fetch(url, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json"
     },
     body: JSON.stringify(payload)
   });
-  return upload;
+  if (response.ok) {
+    let data = response.json()
+    return data;
+  }
 }

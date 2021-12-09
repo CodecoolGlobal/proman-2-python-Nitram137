@@ -30,14 +30,19 @@ function boardBuilder(board) {
     </div>
 
     <div id="collapse-${board.id}" class="collapse show">
-        <div class="board row" data-board-id=${board.id}></div>
+        <div class="board row" data-board-id=${board.id}>
+            <input type="text" class="new-status-name" data-board-id="${board.id}">
+            <button class="add-status" data-board-id="${board.id}">Add status</button>
+        </div>
     </div>`;
 }
 
 function statusBuilder(status) {
     return `
     <div class="status col" data-status-id="${status.id}">    
-    <div class="status-header"><h6>${status.title}</h6></div>
+        <div class="status-header"><h6>${status.title}</h6></div>
+        <input type="text" class="new-card-name" data-status-id="${status.id}">
+        <button class="add-card" data-status-id="${status.id}">Add status</button>
     </div>`
 }
 

@@ -14,8 +14,7 @@ export let boardsManager = {
     for (let board of boards) {
       const content = boardBuilder(board);
       domManager.addChild("#root", content);
-      renameBoard(board.id, board.title)
-
+      renameBoard(board.id, board.title);
       const statuses = await dataHandler.getStatuses(board.id);
       const cards = await dataHandler.getCardsByBoardId(board.id);
       for (let status of statuses) {
@@ -27,16 +26,51 @@ export let boardsManager = {
             domManager.addChild(`.status[data-status-id="${status.id}"]`, statusContent);
           }
         }
+        domManager.addEventListener(
+            `.add-card[data-status-id="${status.id}"]`,
+            "click", () => {
+            addCardToStatus(board.id, status.id)
+          }
+        )
       }
+      domManager.addEventListener(
+          `.add-status[data-board-id="${board.id}"]`,
+          "click", ()=>{
+          addStatusToBoard(board.id)});
     }
     inputButton();
   }
 };
 
+async function addStatusToBoard(boardId) {
+  const inputText = document.querySelector(`.new-status-name[data-board-id="${boardId}"]`);
+  const statusTitle = inputText.value;
+  if (statusTitle !== '') {
+    const newStatus = await dataHandler.createNewStatus(statusTitle, boardId);
+    const statusBuilder = htmlFactory(htmlTemplates.status);
+    const statusHTML = statusBuilder(newStatus[0]);
+    domManager.addChild(`.board[data-board-id="${boardId}"]`, statusHTML);
+    domManager.addEventListener(
+      `.add-card[data-status-id="${newStatus[0].id}"]`,
+      "click", () => {
+      addCardToStatus(boardId, newStatus[0].id)})
+  }
+}
+
+async function addCardToStatus(boardId, statusId) {
+  const inputText = document.querySelector(`.new-card-name[data-status-id="${statusId}"]`);
+  const cardTitle = inputText.value;
+  if (cardTitle !== '') {
+    const newCard = await dataHandler.createNewCard(cardTitle, boardId, statusId);
+    const cardBuilder = htmlFactory(htmlTemplates.card);
+    const cardHTML = cardBuilder(newCard[0]);
+    domManager.addChild(`.status[data-status-id="${statusId}"]`, cardHTML);
+  }
+}
 
 function inputButton(){
     domManager.addEventListener('.create-board-button', 'click', getNewBoardName)
-};
+}
 
 function getNewBoardName() {
     const buttonContainer = document.querySelector(".button-container");
@@ -65,7 +99,7 @@ function getNewBoardName() {
         };
       loadLastBoard();
     })
-  };
+  }
 
 
 function renameBoard(boardId) {
