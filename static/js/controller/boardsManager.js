@@ -43,31 +43,16 @@ async function addStatusToBoard(boardId) {
 
 async function addDefaultStatusToBoard(boardId) {
     const statusTitles = ["new", "in progress", "testing", "done"];
-    const statusBuilder = htmlFactory(htmlTemplates.status);
     for (let i = 0; i < statusTitles.length; i++){
-        const newStatus = await dataHandler.createNewStatus(statusTitles[i], boardId);
-        const statusHTML = statusBuilder(newStatus[0]);
-        domManager.addChild(`.board[data-board-id="${boardId}"]`, statusHTML);
-        domManager.addEventListener(
-      `.add-card[data-status-id="${newStatus[0].id}"]`,
-      "click", () => {
-      addCardToStatus(boardId, newStatus.id)})
+        await statusesManager.addStatusToBoard(boardId, statusTitles[i])
     }
-}
-
-async function addCardToStatus(boardId, statusId) {
-  const inputText = document.querySelector(`.new-card-name[data-status-id="${statusId}"]`);
-  const cardTitle = inputText.value;
-  if (cardTitle !== '') {
-    await cardsManager.addCardToStatus(boardId, statusId, cardTitle);
-  }
 }
 
 function inputButton(){
     domManager.addEventListener('.create-board-button', 'click', getNewBoardName)
 }
 
-function getNewBoardName() {
+async function getNewBoardName() {
     const buttonContainer = document.querySelector(".button-container");
     const submitButton = document.createElement("button");
     submitButton.setAttribute("type", "button");
@@ -78,12 +63,12 @@ function getNewBoardName() {
     boardNameInput.setAttribute("name", "board-name-input");
     buttonContainer.appendChild(boardNameInput);
     buttonContainer.appendChild(submitButton);
-    submitButton.addEventListener("click", () => {
-      dataHandler.createNewBoard(boardNameInput.value)
-        buttonContainer.removeChild(boardNameInput)
-        buttonContainer.removeChild(submitButton)
+    submitButton.addEventListener("click", async () => {
+        await dataHandler.createNewBoard(boardNameInput.value);
+        buttonContainer.removeChild(boardNameInput);
+        buttonContainer.removeChild(submitButton);
         const loadLastBoard = () => {
-          fetch("/api/boards", {
+            fetch("/api/boards", {
               method: "GET",
           }).then((response) => {
               return response.json();
