@@ -8,8 +8,6 @@ export let boardsManager = {
   loadBoards: async function () {
     const boards = await dataHandler.getBoards();
     const boardBuilder = htmlFactory(htmlTemplates.board);
-    const statusBuilder = htmlFactory(htmlTemplates.status);
-    const cardBuilder = htmlFactory(htmlTemplates.card);
 
     for (let board of boards) {
       const content = boardBuilder(board);
@@ -18,20 +16,12 @@ export let boardsManager = {
       const statuses = await dataHandler.getStatuses(board.id);
       const cards = await dataHandler.getCardsByBoardId(board.id);
       for (let status of statuses) {
-        const boardContent = statusBuilder(status);
-        domManager.addChild(`.board[data-board-id="${board.id}"]`, boardContent);
+        await statusesManager.addStatusToBoard(board.id, status.title);
         for (let card of cards) {
           if (card.status_id === status.id) {
-            const statusContent = cardBuilder(card);
-            domManager.addChild(`.status[data-status-id="${status.id}"]`, statusContent);
+            await cardsManager.addCardToStatus(board.id, status.id, card.title)
           }
         }
-        domManager.addEventListener(
-            `.add-card[data-status-id="${status.id}"]`,
-            "click", () => {
-            addCardToStatus(board.id, status.id)
-          }
-        )
       }
       domManager.addEventListener(
           `.add-status[data-board-id="${board.id}"]`,
@@ -47,14 +37,6 @@ async function addStatusToBoard(boardId) {
   const statusTitle = inputText.value;
   if (statusTitle !== '') {
     await statusesManager.addStatusToBoard(boardId, statusTitle)
-  }
-}
-
-async function addCardToStatus(boardId, statusId) {
-  const inputText = document.querySelector(`.new-card-name[data-status-id="${statusId}"]`);
-  const cardTitle = inputText.value;
-  if (cardTitle !== '') {
-    await cardsManager.addCardToStatus(boardId, statusId, cardTitle);
   }
 }
 
