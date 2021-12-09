@@ -103,14 +103,16 @@ function getNewBoardName() {
 
 
 function renameBoard(boardId) {
-    domManager.addEventListener(`#heading-${boardId} h5`, "click", function (e) {
+    domManager.addEventListener(`#heading-${boardId} h5`, "click", function (e)
+    {if (!document.querySelector("#new-board-name")){
         boardTitleToInputToTitleHandler(e, `${boardId}`)
+        }
     })
 }
 
 async function boardTitleToInputToTitleHandler(clickEvent, boardId) {
-    let boardTitle = clickEvent.target.innerText
-    const inputField = `<input type="text" id="new-board-name" name="new-board-name" value="${boardTitle}">`
+    let oldBoardTitle = clickEvent.target.innerText
+    const inputField = `<input type="text" id="new-board-name" name="new-board-name" value="${oldBoardTitle}">`
     const boardTitleText = clickEvent.target
     const newDiv = document.createElement('h5');
     newDiv.innerHTML = inputField
@@ -122,7 +124,12 @@ async function boardTitleToInputToTitleHandler(clickEvent, boardId) {
             dataHandler.renameBoard(`${boardId}`, newBoardName)
             e.target.parentNode.removeChild(e.target)
             domManager.addChild(`#heading-${boardId} h5`, `${newBoardName}`)
-            renameBoard(`${boardId}`, `${boardTitle}`)
+            renameBoard(`${boardId}`)
+        }else if (window.onclick){
+            e.target.parentNode.removeChild(e.target)
+            domManager.addChild(`#heading-${boardId} h5`, `${oldBoardTitle}`)
+            renameBoard(`${boardId}`)
+
         }
     })
 }
