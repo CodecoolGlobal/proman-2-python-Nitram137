@@ -44,14 +44,7 @@ async function addStatusToBoard(boardId) {
   const inputText = document.querySelector(`.new-status-name[data-board-id="${boardId}"]`);
   const statusTitle = inputText.value;
   if (statusTitle !== '') {
-    const newStatus = await dataHandler.createNewStatus(statusTitle, boardId);
-    const statusBuilder = htmlFactory(htmlTemplates.status);
-    const statusHTML = statusBuilder(newStatus[0]);
-    domManager.addChild(`.board[data-board-id="${boardId}"]`, statusHTML);
-    domManager.addEventListener(
-      `.add-card[data-status-id="${newStatus[0].id}"]`,
-      "click", () => {
-      addCardToStatus(boardId, newStatus[0].id)})
+    await statusesManager.addStatusToBoard(boardId, statusTitle)
   }
 }
 
@@ -59,10 +52,7 @@ async function addCardToStatus(boardId, statusId) {
   const inputText = document.querySelector(`.new-card-name[data-status-id="${statusId}"]`);
   const cardTitle = inputText.value;
   if (cardTitle !== '') {
-    const newCard = await dataHandler.createNewCard(cardTitle, boardId, statusId);
-    const cardBuilder = htmlFactory(htmlTemplates.card);
-    const cardHTML = cardBuilder(newCard[0]);
-    domManager.addChild(`.status[data-status-id="${statusId}"]`, cardHTML);
+    await cardsManager.addCardToStatus(boardId, statusId, cardTitle);
   }
 }
 

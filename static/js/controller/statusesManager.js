@@ -1,6 +1,7 @@
 import { dataHandler } from "../data/dataHandler.js";
 import { htmlFactory, htmlTemplates } from "../view/htmlFactory.js";
 import { domManager } from "../view/domManager.js";
+import {cardsManager} from "./cardsManager.js";
 
 export let statusesManager = {
   loadStatuses: async function (boardId) {
@@ -15,4 +16,15 @@ export let statusesManager = {
       );
     }
   },
+
+  addStatusToBoard: async function(boardId, statusTitle) {
+    const newStatus = await dataHandler.createNewStatus(statusTitle, boardId);
+    const statusBuilder = htmlFactory(htmlTemplates.status);
+    const statusHTML = statusBuilder(newStatus[0]);
+    domManager.addChild(`.board[data-board-id="${boardId}"]`, statusHTML);
+    domManager.addEventListener(
+      `.add-card[data-status-id="${newStatus[0].id}"]`,
+      "click", () => {
+      cardsManager.addCardToStatus(boardId, newStatus[0].id)})
+  }
 };
