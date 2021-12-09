@@ -15,6 +15,15 @@ export let statusesManager = {
       this.addCardToStatus(boardId, newStatus[0].id)})
   },
 
+  loadStatusToBoard: async function(boardId, status) {
+    const statusBuilder = htmlFactory(htmlTemplates.status);
+    const statusHTML = statusBuilder(status);
+    domManager.addChild(`.board[data-board-id="${boardId}"]`, statusHTML);
+    domManager.addEventListener(
+      `.add-card[data-status-id="${status.id}"]`,
+      "click", () => {
+      this.addCardToStatus(boardId, status.id)})
+  },
   addCardToStatus: async function(boardId, statusId) {
     const inputText = document.querySelector(`.new-card-name[data-status-id="${statusId}"]`);
     const cardTitle = inputText.value;
