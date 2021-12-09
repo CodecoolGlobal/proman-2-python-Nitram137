@@ -16,7 +16,8 @@ export let boardsManager = {
       const statuses = await dataHandler.getStatuses(board.id);
       const cards = await dataHandler.getCardsByBoardId(board.id);
       for (let status of statuses) {
-        await statusesManager.addStatusToBoard(board.id, status.title);
+        const boardContent = statusBuilder(status);
+        domManager.addChild(`.board[data-board-id="${board.id}"]`, boardContent);
         for (let card of cards) {
           if (card.status_id === status.id) {
             await cardsManager.addCardToStatus(board.id, status.id, card.title)
@@ -37,6 +38,29 @@ async function addStatusToBoard(boardId) {
   const statusTitle = inputText.value;
   if (statusTitle !== '') {
     await statusesManager.addStatusToBoard(boardId, statusTitle)
+  }
+}
+
+
+async function addDefaultStatusToBoard(boardId) {
+    const statusTitles = ["new", "in progress", "testing", "done"];
+    const statusBuilder = htmlFactory(htmlTemplates.status);
+    for (let i = 0; i < statusTitles.length; i++){
+        const newStatus = await dataHandler.createNewStatus(statusTitles[i], boardId);
+        const statusHTML = statusBuilder(newStatus[0]);
+        domManager.addChild(`.board[data-board-id="${boardId}"]`, statusHTML);
+        domManager.addEventListener(
+      `.add-card[data-status-id="${newStatus[0].id}"]`,
+      "click", () => {
+      addCardToStatus(boardId, newStatus.id)})
+    }
+}
+
+async function addCardToStatus(boardId, statusId) {
+  const inputText = document.querySelector(`.new-card-name[data-status-id="${statusId}"]`);
+  const cardTitle = inputText.value;
+  if (cardTitle !== '') {
+    await cardsManager.addCardToStatus(boardId, statusId, cardTitle);
   }
 }
 
@@ -66,6 +90,7 @@ function getNewBoardName() {
               return response.json();
             }).then((board) => {
                 const content = boardBuilder(board[board.length - 1]);
+                addDefaultStatusToBoard(board[board.length - 1].id)
                 domManager.addChild("#root", content);
           });
         };
