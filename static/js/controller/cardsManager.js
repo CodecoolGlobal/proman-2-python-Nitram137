@@ -7,12 +7,14 @@ export let cardsManager = {
     const cardBuilder = htmlFactory(htmlTemplates.card);
     const cardHTML = cardBuilder(card);
     domManager.addChild(`.status[data-status-id="${statusId}"]`, cardHTML);
+    this.renameCard(card.id);
   },
   addCardToStatus:async function(boardId, statusId, cardTitle) {
     const newCard = await dataHandler.createNewCard(cardTitle, boardId, statusId);
     const cardBuilder = htmlFactory(htmlTemplates.card);
     const cardHTML = cardBuilder(newCard[0]);
     domManager.addChild(`.status[data-status-id="${statusId}"]`, cardHTML);
+    this.renameCard(newCard[0].id);
   },
   renameCard: function (cardId) {
     domManager.addEventListener(`.card[data-card-id="${cardId}"]`, "click", function (e) {
