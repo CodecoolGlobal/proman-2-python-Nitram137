@@ -1,4 +1,28 @@
 import data_manager
+import json
+
+
+def reg_user(input_username, input_email, password_hashed):
+    data_manager.execute_insert(
+        '''
+        INSERT INTO users (username, email, password_hashed)
+        VALUES ( %(un)s, %(em)s, %(psswh)s )
+        ;
+        ''',
+        {'un': input_username, 'em': input_email, 'psswh': password_hashed})
+
+
+def login_user(user_name):
+    username = data_manager.execute_select(
+        '''
+        SELECT * 
+        FROM users
+        WHERE username = %(input_username)s
+        ;
+        ''',
+        {'input_username': user_name})
+
+    return username
 
 
 def get_card_status(status_id):
@@ -12,8 +36,8 @@ def get_card_status(status_id):
         SELECT * FROM statuses s
         WHERE s.id = %(status_id)s
         ;
-        """
-        , {"status_id": status_id})
+        """,
+        {"status_id": status_id})
 
     return status
 
@@ -26,6 +50,7 @@ def get_boards():
     return data_manager.execute_select(
         """
         SELECT * FROM boards
+        ORDER BY id
         ;
         """
     )
@@ -94,7 +119,7 @@ def insert_new_board(board_name):
 
 
 def rename_board(board_id, new_board_name):
-    return data_manager.execute_insert(
+    data_manager.execute_insert(
         """
         UPDATE boards
         SET title = %(new_board_name)s
