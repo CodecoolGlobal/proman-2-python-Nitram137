@@ -5,32 +5,36 @@ import { cardsManager } from "./cardsManager.js";
 import { statusesManager } from "./statusesManager.js";
 
 export let boardsManager = {
-  loadBoards: async function () {
-    const boards = await dataHandler.getBoards();
-    const boardBuilder = htmlFactory(htmlTemplates.board);
+    loadBoards: async function () {
+        const boards = await dataHandler.getBoards();
 
-    for (let board of boards) {
-      const content = boardBuilder(board);
-      domManager.addChild("#root", content);
-      renameBoard(board.id, board.title);
-      const statuses = await dataHandler.getStatuses(board.id);
-      const cards = await dataHandler.getCardsByBoardId(board.id);
-      for (let status of statuses) {
-        await statusesManager.addStatusToBoard(board.id, status.title);
-        for (let card of cards) {
-          if (card.status_id === status.id) {
-            await cardsManager.addCardToStatus(board.id, status.id, card.title)
-          }
+        for (let board of boards) {
+            LoadBoard(board).then();
         }
-      }
-      domManager.addEventListener(
-          `.add-status[data-board-id="${board.id}"]`,
-          "click", ()=>{
-          addStatusToBoard(board.id)});
+        inputButton();
     }
-    inputButton();
-  }
 };
+
+async function LoadBoard(board) {
+    const boardBuilder = htmlFactory(htmlTemplates.board);
+    const content = boardBuilder(board);
+    domManager.addChild("#root", content);
+    renameBoard(board.id, board.title);
+    const statuses = await dataHandler.getStatuses(board.id);
+    const cards = await dataHandler.getCardsByBoardId(board.id);
+    for (let status of statuses) {
+        await statusesManager.loadStatusToBoard(board.id, status);
+        for (let card of cards) {
+            if (card.status_id === status.id) {
+                await cardsManager.loadCardToStatus(board.id, status.id, card)
+            }
+        }
+    }
+    domManager.addEventListener(
+      `.add-status[data-board-id="${board.id}"]`,
+      "click", ()=>{
+      addStatusToBoard(board.id)});
+}
 
 async function addStatusToBoard(boardId) {
   const inputText = document.querySelector(`.new-status-name[data-board-id="${boardId}"]`);
@@ -65,20 +69,13 @@ async function getNewBoardName() {
     buttonContainer.appendChild(submitButton);
     submitButton.addEventListener("click", async () => {
         await dataHandler.createNewBoard(boardNameInput.value);
+        const boards = await dataHandler.getBoards();
+        const lastBoard = boards[boards.length - 1];
+        await LoadBoard(lastBoard);
+        await addDefaultStatusToBoard(lastBoard.id);
+
         buttonContainer.removeChild(boardNameInput);
         buttonContainer.removeChild(submitButton);
-        const loadLastBoard = () => {
-            fetch("/api/boards", {
-              method: "GET",
-          }).then((response) => {
-              return response.json();
-            }).then((board) => {
-                const content = boardBuilder(board[board.length - 1]);
-                addDefaultStatusToBoard(board[board.length - 1].id)
-                domManager.addChild("#root", content);
-          });
-        };
-      loadLastBoard();
     })
   }
 
