@@ -49,12 +49,29 @@ async function addStatusToBoard(boardId) {
     const newStatus = await dataHandler.createNewStatus(statusTitle, boardId);
     const statusBuilder = htmlFactory(htmlTemplates.status);
     const statusHTML = statusBuilder(newStatus[0]);
+    console.log(newStatus[0])
+      console.log(newStatus)
     domManager.addChild(`.board[data-board-id="${boardId}"]`, statusHTML);
     domManager.addEventListener(
       `.add-card[data-status-id="${newStatus[0].id}"]`,
       "click", () => {
       addCardToStatus(boardId, newStatus[0].id)})
   }
+}
+
+
+async function addDefaultStatusToBoard(boardId) {
+    const statusTitles = ["new", "in progress", "testing", "done"];
+    const statusBuilder = htmlFactory(htmlTemplates.status);
+    for (let i = 0; i < statusTitles.length; i++){
+        const newStatus = await dataHandler.createNewStatus(statusTitles[i], boardId);
+        const statusHTML = statusBuilder(newStatus[0]);
+        domManager.addChild(`.board[data-board-id="${boardId}"]`, statusHTML);
+        domManager.addEventListener(
+      `.add-card[data-status-id="${newStatus[0].id}"]`,
+      "click", () => {
+      addCardToStatus(boardId, newStatus.id)})
+    }
 }
 
 async function addCardToStatus(boardId, statusId) {
@@ -94,6 +111,7 @@ function getNewBoardName() {
               return response.json();
             }).then((board) => {
                 const content = boardBuilder(board[board.length - 1]);
+                addDefaultStatusToBoard(board[board.length - 1].id)
                 domManager.addChild("#root", content);
           });
         };
