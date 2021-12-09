@@ -22,7 +22,7 @@ function boardBuilder(board) {
     return `
     <div class="board card">
         <a href="#collapse-${board.id}" data-toggle="collapse">
-             <div class="card-header inline" id="heading-${board.id}">
+             <div class="card-header" id="heading-${board.id}">
                  <h5 class="mb-0">${board.title}</h5>
                  <button style="display: none" type="button" id="save-board-btn-${board.id}" class="btn btn-secondary">Save</button>
              </div>
