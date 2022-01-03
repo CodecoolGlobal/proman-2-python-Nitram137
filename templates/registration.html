@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+
+    <div class="reg_form position-absolute top-50 start-50 translate-middle">
+        <div class="container-fluid text-center">
+            <div class="reg_header">
+                <h2>User registration</h2>
+            </div>
+            <br>
+            <p class="system_messages text-danger">{{ msg }}</p>
+            <br>
+            <form action="/registration" method="post">
+                <label for="inputUsername">User name:</label><br>
+                <input id="inputUsername" type="text" name="user_name" placeholder="JohnDoe13" required oninvalid="this.setCustomValidity('Please fill all fields!')"><br><br>
+                <label for="inputEmail">E-mail:</label><br>
+                <input id="inputEmail" type="email" name="email" placeholder="johndoe@unknown.com" required oninvalid="this.setCustomValidity('Please fill all fields!')"><br><br>
+                <label for="inputPassword">Password:</label><br>
+                <input id="inputPassword" type="password" name="password" required oninvalid="this.setCustomValidity('Please fill all fields!')"><br><br>
+                <button class="btn btn-primary" type="submit">Register</button>
+                <br><br>
+                <form action="/">
+                    <button class='btn btn-primary' type="submit">Back</button>
+                </form>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

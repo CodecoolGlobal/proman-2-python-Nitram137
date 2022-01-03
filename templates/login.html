@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+
+    <div class="container text-center position-absolute top-50 start-50 translate-middle">
+        <div id="login_box">
+            <h2>Login</h2>
+            <br>
+            <p class="system_messages text-danger">{{ msg }}</p>
+            <br>
+            <form action="/login" method="post">
+                <label for="user_name">User name:</label><br>
+                <input type="text" id="user_name" name="user_name" required><br><br>
+                <label for="user_password">Password</label><br>
+                <input type="password" id="user_password" name="user_password" required><br><br>
+                <button class='btn btn-primary' type="submit">Login</button>
+            </form>
+            <br>
+            <form action="/">
+                <button type="submit" class="btn btn-primary">Back</button>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

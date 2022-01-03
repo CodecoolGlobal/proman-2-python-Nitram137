@@ -1,3 +1,21 @@
-#boards {
-    background-color: green;
+body {
+    background-image: url("gentleman.png");
+    background-repeat: no-repeat;
+    background-position: right;
+}
+
+
+a {
+    color: inherit;
+    text-decoration: inherit;
+    cursor: auto;
+}
+
+a:hover {
+    color: inherit;
+}
+
+h5 {
+    width: fit-content;
+    block-size: fit-content
 }
