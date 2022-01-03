@@ -91,7 +91,7 @@ def insert_new_status(status_title, board_id):
         """
         SELECT * FROM statuses
         where board_id = %(board_id)s and title = %(status_title)s
-        ;""", {"status_title": status_title, "board_id": board_id}
+        ;""", {"status_title": status_title, "board_id": board_id}, fetchall=False
     )
 
 
@@ -106,7 +106,7 @@ def insert_new_card(card_title, board_id, status_id):
         """
         SELECT * FROM cards
         where title = %(card_title)s and board_id = %(board_id)s and status_id = %(status_id)s
-        ;""", {"card_title": card_title, "board_id": board_id, "status_id": status_id}
+        ;""", {"card_title": card_title, "board_id": board_id, "status_id": status_id}, fetchall=False
     )
 
 
@@ -156,3 +156,12 @@ def delete_status(status_id):
         WHERE id = %(status_id)s;
         """,
         {"status_id": status_id})
+
+
+def delete_card(card_id):
+    data_manager.execute_insert(
+        """
+        DELETE FROM cards
+        WHERE id = %(card_id)s;
+        """, {"card_id": card_id}
+    )

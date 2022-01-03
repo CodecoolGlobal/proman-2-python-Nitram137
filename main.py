@@ -132,6 +132,11 @@ def delete_status(status_id: int):
     return queires.delete_status(status_id)
 
 
+@app.route("/api/card/<int:card_id>/delete", methods=['DELETE'])
+@json_response
+def delete_card(card_id: int):
+    return queires.delete_card(card_id)
+
 
 def main():
     app.run(debug=True)

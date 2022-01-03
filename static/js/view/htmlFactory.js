@@ -58,13 +58,17 @@ function statusBuilder(status) {
             <input type="text" class="new-card-name" data-status-id="${status.id}">
             <button class="add-card" data-status-id="${status.id}">Add card</button>
         </div>
-        <div class="status-body">
+        <div class="status-body" data-status-id="${status.id}">
         
         </div>
     </div>`
 }
 
 function cardBuilder(card) {
-    return `<div class="card" data-card-id="${card.id}">${card.title}</div>`;
+    return `
+    <div class="card" data-card-id="${card.id}">   
+        <p class="card-text" data-card-id="${card.id}">${card.title}</p>
+        <button type="button" class="btn-close delete-card" data-card-id="${card.id}"></button>
+    </div>`;
 }
 

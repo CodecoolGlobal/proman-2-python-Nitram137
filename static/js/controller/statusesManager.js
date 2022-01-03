@@ -6,14 +6,10 @@ import {cardsManager} from "./cardsManager.js";
 export let statusesManager = {
   addStatusToBoard: async function(boardId, statusTitle) {
     const newStatus = await dataHandler.createNewStatus(statusTitle, boardId);
-    const statusBuilder = htmlFactory(htmlTemplates.status);
-    const statusHTML = statusBuilder(newStatus[0]);
-    domManager.addChild(`.board-body[data-board-id="${boardId}"]`, statusHTML);
-    addCardToStatus(boardId, newStatus[0].id);
-    deleteStatusEvent(newStatus[0].id);
+    statusesManager.loadStatusToBoard(boardId, newStatus);
   },
 
-  loadStatusToBoard: async function(boardId, status) {
+  loadStatusToBoard: function(boardId, status) {
     const statusBuilder = htmlFactory(htmlTemplates.status);
     const statusHTML = statusBuilder(status);
     domManager.addChild(`.board-body[data-board-id="${boardId}"]`, statusHTML);

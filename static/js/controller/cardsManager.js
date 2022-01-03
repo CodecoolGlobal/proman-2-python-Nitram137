@@ -3,32 +3,38 @@ import { htmlFactory, htmlTemplates } from "../view/htmlFactory.js";
 import { domManager } from "../view/domManager.js";
 
 export let cardsManager = {
-  loadCardToStatus:async function(boardId, statusId, card) {
-    const cardBuilder = htmlFactory(htmlTemplates.card);
-    const cardHTML = cardBuilder(card);
-    domManager.addChild(`.status[data-status-id="${statusId}"]`, cardHTML);
-    this.renameCard(card.id);
-  },
   addCardToStatus:async function(boardId, statusId, cardTitle) {
     const newCard = await dataHandler.createNewCard(cardTitle, boardId, statusId);
-    const cardBuilder = htmlFactory(htmlTemplates.card);
-    const cardHTML = cardBuilder(newCard[0]);
-    domManager.addChild(`.status[data-status-id="${statusId}"]`, cardHTML);
-    this.renameCard(newCard[0].id);
+    cardsManager.loadCardToStatus(boardId, statusId, newCard)
   },
-  renameCard: function (cardId) {
-    domManager.addEventListener(`.card[data-card-id="${cardId}"]`, "click", function (e) {
-    if (!document.querySelector("#new-card-name-input")){
-        cardTitleToInputHandler(e, cardId);
-        }
-    })
+  loadCardToStatus: function(boardId, statusId, card) {
+    const cardBuilder = htmlFactory(htmlTemplates.card);
+    const cardHTML = cardBuilder(card);
+    domManager.addChild(`.status-body[data-status-id="${statusId}"]`, cardHTML);
+    renameCard(card.id);
+    deleteCard(card.id)
   }
 };
 
+function deleteCard(cardId) {
+  domManager.addEventListener(
+    `.delete-card[data-card-id="${cardId}"]`,
+    'click', () => {
+      dataHandler.deleteCard(cardId).then();
+      let deletedCard = document.querySelector(`.card[data-card-id="${cardId}"]`);
+      deletedCard.remove();
+    });
+}
 
-
-function deleteButtonHandler(clickEvent) {}
-
+function renameCard(cardId) {
+    domManager.addEventListener(
+      `.card-text[data-card-id="${cardId}"]`,
+      "click", function (e) {
+      if (!document.querySelector("#new-card-name-input")){
+          cardTitleToInputHandler(e, cardId);
+      }
+    });
+  }
 
 function cardTitleToInputHandler(clickEvent, cardId) {
   let oldCardName = clickEvent.target.innerText;
