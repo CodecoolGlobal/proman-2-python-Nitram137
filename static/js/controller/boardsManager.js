@@ -20,9 +20,9 @@ export let boardsManager = {
 };
 
 async function DeleteBoard(boardId) {
-    document.querySelector('#root').innerHTML = '';
     await dataHandler.deleteBoard(boardId);
-    await boardsManager.loadBoards();
+    let deletedBoard = document.querySelector(`.board[data-board-id="${boardId}"]`);
+    deletedBoard.remove();
 }
 
 

@@ -126,6 +126,13 @@ def delete_board(board_id: int):
     return queires.delete_board(board_id)
 
 
+@app.route("/api/status/<int:status_id>/delete", methods=['DELETE'])
+@json_response
+def delete_status(status_id: int):
+    return queires.delete_status(status_id)
+
+
+
 def main():
     app.run(debug=True)
 

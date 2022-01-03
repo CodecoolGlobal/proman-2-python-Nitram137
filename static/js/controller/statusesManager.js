@@ -8,27 +8,36 @@ export let statusesManager = {
     const newStatus = await dataHandler.createNewStatus(statusTitle, boardId);
     const statusBuilder = htmlFactory(htmlTemplates.status);
     const statusHTML = statusBuilder(newStatus[0]);
-    domManager.addChild(`.board[data-board-id="${boardId}"]`, statusHTML);
-    domManager.addEventListener(
-      `.add-card[data-status-id="${newStatus[0].id}"]`,
-      "click", () => {
-      this.addCardToStatus(boardId, newStatus[0].id)})
+    domManager.addChild(`.board-body[data-board-id="${boardId}"]`, statusHTML);
+    addCardToStatus(boardId, newStatus[0].id);
+    deleteStatusEvent(newStatus[0].id);
   },
 
   loadStatusToBoard: async function(boardId, status) {
     const statusBuilder = htmlFactory(htmlTemplates.status);
     const statusHTML = statusBuilder(status);
-    domManager.addChild(`.board[data-board-id="${boardId}"]`, statusHTML);
-    domManager.addEventListener(
-      `.add-card[data-status-id="${status.id}"]`,
-      "click", () => {
-      this.addCardToStatus(boardId, status.id)})
+    domManager.addChild(`.board-body[data-board-id="${boardId}"]`, statusHTML);
+    addCardToStatus(boardId, status.id);
+    deleteStatusEvent(status.id);
   },
-  addCardToStatus: async function(boardId, statusId) {
-    const inputText = document.querySelector(`.new-card-name[data-status-id="${statusId}"]`);
-    const cardTitle = inputText.value;
-    if (cardTitle !== '') {
-      await cardsManager.addCardToStatus(boardId, statusId, cardTitle);
-    }
-  }
 };
+
+function deleteStatusEvent(statusId) {
+  domManager.addEventListener(
+    `.delete-status[data-status-id="${statusId}"]`,
+    'click', () => {
+      dataHandler.deleteStatus(statusId).then();
+      let deletedStatus = document.querySelector(`.status[data-status-id="${statusId}"]`);
+      deletedStatus.remove();
+    });
+}
+
+function addCardToStatus(boardId, statusId) {
+  domManager.addEventListener(
+    `.add-card[data-status-id="${statusId}"]`,
+    "click", () => {
+      const inputText = document.querySelector(`.new-card-name[data-status-id="${statusId}"]`);
+      const cardTitle = inputText.value;
+      if (cardTitle !== '') cardsManager.addCardToStatus(boardId, statusId, cardTitle).then();
+    })
+}

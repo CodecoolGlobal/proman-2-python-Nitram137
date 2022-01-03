@@ -30,28 +30,37 @@ function buttonBuilder(buttonClass="", buttonId ="") {
 
 function boardBuilder(board) {
     return `
-    <div class="board card">
-         <div class="card-header" id="heading-${board.id}">
-             <h5 class="mb-0">${board.title}</h5>
-             <button type="button" class="btn-close delete-board" data-board-id="${board.id}"></button>
-             <a href="#collapse-${board.id}" data-toggle="collapse"></a>
-         </div>
-    </div>
-
-    <div id="collapse-${board.id}" class="collapse show">
-        <div class="board row" data-board-id=${board.id}>
-            <input type="text" class="new-status-name" data-board-id="${board.id}">
-            <button class="add-status" data-board-id="${board.id}">Add status</button>
+    <div class="board" data-board-id="${board.id}">
+        <div class="board-header card">
+             <div class="card-header" id="heading-${board.id}">
+                 <h5 class="mb-0">${board.title}</h5>
+                 <button type="button" class="btn-close delete-board" data-board-id="${board.id}"></button>
+                 <a href="#collapse-${board.id}" data-toggle="collapse"></a>
+             </div>
+        </div>
+    
+        <div id="collapse-${board.id}" class="collapse show">
+            <div class="board-body row" data-board-id="${board.id}">
+                <input type="text" class="new-status-name" data-board-id="${board.id}">
+                <button class="add-status" data-board-id="${board.id}">Add status</button>
+            </div>
         </div>
     </div>`;
+
 }
 
 function statusBuilder(status) {
     return `
     <div class="status col" data-status-id="${status.id}">    
-        <div class="status-header"><h6>${status.title}</h6></div>
-        <input type="text" class="new-card-name" data-status-id="${status.id}">
-        <button class="add-card" data-status-id="${status.id}">Add card</button>
+        <div class="status-header">
+            <h6>${status.title}</h6>
+            <button type="button" class="btn-close delete-status" data-status-id="${status.id}"></button>
+            <input type="text" class="new-card-name" data-status-id="${status.id}">
+            <button class="add-card" data-status-id="${status.id}">Add card</button>
+        </div>
+        <div class="status-body">
+        
+        </div>
     </div>`
 }
 
