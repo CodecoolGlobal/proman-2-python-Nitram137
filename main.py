@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, session, request, redirect, flash
+from flask import Flask, render_template, url_for, session, request, redirect
 from dotenv import load_dotenv
 from util import json_response
 from datetime import timedelta
@@ -39,16 +39,17 @@ def registration():
 def login():
     if request.method == "POST":
         current_user = queires.login_user(request.form['user_name'])
+        print(current_user, len(current_user))
         input_password = request.form['user_password']
         if len(current_user) > 0:
-            if current_user[0]['username'] is None and util.verify_password(input_password, current_user[0]['password_hashed']):
+            if util.verify_password(input_password, current_user[0]['password_hashed']):
                 session['username'] = current_user[0]['username']
                 return redirect('/')
             else:
-                msg = "Wrong USER or PASSWORD, try again!"
+                msg = "Wrong Password try again!"
                 return render_template('login.html', msg=msg, username='Visitor')
         else:
-            msg = "Wrong USER or PASSWORD, try again!"
+            msg = "Wrong USER, try again!"
             return render_template('login.html', msg=msg, username='Visitor')
     else:
         if "username" in session:
