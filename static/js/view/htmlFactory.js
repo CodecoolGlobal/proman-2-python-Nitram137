@@ -1,7 +1,8 @@
 export const htmlTemplates = {
     board: 1,
     status: 2,
-    card: 3
+    card: 3,
+    button: 4
 }
 
 export function htmlFactory(template) {
@@ -12,21 +13,29 @@ export function htmlFactory(template) {
             return statusBuilder
         case htmlTemplates.card:
             return cardBuilder
+        case htmlTemplates.button:
+            return buttonBuilder
         default:
             console.error("Undefined template: " + template)
             return () => { return "" }
     }
 }
 
+function buttonBuilder(buttonClass="", buttonId ="") {
+    return `
+    <div class="button-container">
+        <button type="button" class="${buttonClass}" id="${buttonId}">+ New Board</button>
+    </div>`;
+}
+
 function boardBuilder(board) {
     return `
     <div class="board card">
-        <a href="#collapse-${board.id}" data-toggle="collapse">
-             <div class="card-header" id="heading-${board.id}">
-                 <h5 class="mb-0">${board.title}</h5>
-                 <button style="display: none" type="button" id="save-board-btn-${board.id}" class="btn btn-secondary">Save</button>
-             </div>
-        </a>
+         <div class="card-header" id="heading-${board.id}">
+             <h5 class="mb-0">${board.title}</h5>
+             <button type="button" class="btn-close delete-board" data-board-id="${board.id}"></button>
+             <a href="#collapse-${board.id}" data-toggle="collapse"></a>
+         </div>
     </div>
 
     <div id="collapse-${board.id}" class="collapse show">

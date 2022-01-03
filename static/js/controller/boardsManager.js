@@ -6,7 +6,9 @@ import { statusesManager } from "./statusesManager.js";
 
 export let boardsManager = {
     loadBoards: async function () {
-        await DeleteBoard(1);
+        const buttonBuilder = htmlFactory(htmlTemplates.button);
+        const content = buttonBuilder("create-board-button");
+        domManager.addChild("#root", content);
 
         const boards = await dataHandler.getBoards();
 
@@ -18,7 +20,9 @@ export let boardsManager = {
 };
 
 async function DeleteBoard(boardId) {
+    document.querySelector('#root').innerHTML = '';
     await dataHandler.deleteBoard(boardId);
+    await boardsManager.loadBoards();
 }
 
 
@@ -27,6 +31,11 @@ async function LoadBoard(board) {
     const content = boardBuilder(board);
     domManager.addChild("#root", content);
     renameBoard(board.id, board.title);
+    console.log(document.querySelector(`.delete-board[data-board-id="${board.id}"]`));
+    domManager.addEventListener(
+        `.delete-board[data-board-id="${board.id}"]`,
+        "click", () => {
+        DeleteBoard(board.id)});
     const statuses = await dataHandler.getStatuses(board.id);
     const cards = await dataHandler.getCardsByBoardId(board.id);
     for (let status of statuses) {
@@ -38,9 +47,9 @@ async function LoadBoard(board) {
         }
     }
     domManager.addEventListener(
-      `.add-status[data-board-id="${board.id}"]`,
-      "click", ()=>{
-      addStatusToBoard(board.id)});
+        `.add-status[data-board-id="${board.id}"]`,
+        "click", ()=>{
+        addStatusToBoard(board.id)});
 }
 
 async function addStatusToBoard(boardId) {
