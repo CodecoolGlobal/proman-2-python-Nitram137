@@ -87,4 +87,13 @@ ALTER TABLE ONLY cards
 ALTER TABLE ONLY statuses
     ADD CONSTRAINT fk_statuses_board_id FOREIGN KEY (board_id) REFERENCES boards(id);
 
+alter table cards drop constraint fk_cards_board_id;
+
+alter table cards
+	add constraint fk_cards_board_id
+		foreign key (board_id) references boards
+			on delete cascade;
+
+
+
 DROP TABLE IF EXISTS linkingBoardStatus;

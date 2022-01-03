@@ -6,6 +6,8 @@ import { statusesManager } from "./statusesManager.js";
 
 export let boardsManager = {
     loadBoards: async function () {
+        await DeleteBoard(1);
+
         const boards = await dataHandler.getBoards();
 
         for (let board of boards) {
@@ -14,6 +16,11 @@ export let boardsManager = {
         inputButton();
     }
 };
+
+async function DeleteBoard(boardId) {
+    await dataHandler.deleteBoard(boardId);
+}
+
 
 async function LoadBoard(board) {
     const boardBuilder = htmlFactory(htmlTemplates.board);
@@ -99,5 +106,5 @@ function boardTitleToInputToTitleHandler(clickEvent, boardId, boardTitle ) {
         boardTitleText.innerHTML = `${boardTitle}`;
         saveBtn.style.display = "none";
         renameBoard(boardId, boardTitle);
-    })
+    });
 }

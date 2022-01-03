@@ -43,6 +43,9 @@ export let dataHandler = {
     const payLoad = {title: newCardName};
     await apiPut(`/api/cards/${cardId}/rename/`, payLoad);
   },
+  deleteBoard: async function(boardId) {
+    await apiDelete(`/api/board/${boardId}/delete`);
+  },
 };
 
 async function apiGet(url) {
@@ -57,7 +60,18 @@ async function apiGet(url) {
 
 async function apiPost(url, payload) {}
 
-async function apiDelete(url) {}
+async function apiDelete(url) {
+  let response = await fetch(url, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json"
+    },
+  });
+  if (response.ok) {
+    let data = response.json()
+    return data;
+  }
+}
 
 async function apiPut(url, payload) {
   let response = await fetch(url, {

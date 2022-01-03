@@ -138,3 +138,12 @@ def rename_card(card_id, new_card_name):
         ;
         """,
     {"card_id": card_id, "new_card_name": new_card_name})
+
+
+def delete_board(board_id):
+    data_manager.execute_insert(
+        """
+        DELETE FROM boards
+        WHERE id = %(board_id)s;
+        """,
+        {"board_id": board_id})
