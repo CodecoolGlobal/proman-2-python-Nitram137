@@ -71,10 +71,10 @@ def get_boards():
     return queires.get_boards()
 
 
-@app.route("/api/createBoard", methods=["GET", "POST", "PUT"])
+@app.route("/api/createBoard", methods=["POST"])
 @json_response
 def create_new_board():
-    if request.method == "PUT":
+    if request.method == "POST":
         body = request.json
         return queires.insert_new_board(body['title'])
 

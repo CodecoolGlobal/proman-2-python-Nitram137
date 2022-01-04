@@ -19,23 +19,13 @@ export let boardsManager = {
     }
 };
 
-async function DeleteBoard(boardId) {
-    await dataHandler.deleteBoard(boardId);
-    let deletedBoard = document.querySelector(`.board[data-board-id="${boardId}"]`);
-    deletedBoard.remove();
-}
-
-
 async function LoadBoard(board) {
     const boardBuilder = htmlFactory(htmlTemplates.board);
     const content = boardBuilder(board);
     domManager.addChild("#root", content);
     renameBoard(board.id);
-    console.log(document.querySelector(`.delete-board[data-board-id="${board.id}"]`));
-    domManager.addEventListener(
-        `.delete-board[data-board-id="${board.id}"]`,
-        "click", () => {
-        DeleteBoard(board.id)});
+    deleteBoard(board.id);
+    addStatusToBoard(board.id)
     const statuses = await dataHandler.getStatuses(board.id);
     const cards = await dataHandler.getCardsByBoardId(board.id);
     for (let status of statuses) {
@@ -46,18 +36,36 @@ async function LoadBoard(board) {
             }
         }
     }
-    domManager.addEventListener(
-        `.add-status[data-board-id="${board.id}"]`,
-        "click", ()=>{
-        addStatusToBoard(board.id)});
 }
 
-async function addStatusToBoard(boardId) {
-  const inputText = document.querySelector(`.new-status-name[data-board-id="${boardId}"]`);
-  const statusTitle = inputText.value;
-  if (statusTitle !== '') {
-    await statusesManager.addStatusToBoard(boardId, statusTitle)
-  }
+function renameBoard(boardId) {
+    domManager.addEventListener(`#heading-${boardId} h5`, "click",  (e) => {
+        if (!document.querySelector("#new-name-input")){
+            domManager.titleToInputHandler(e, boardId, dataHandler.renameBoard);
+        }
+    })
+}
+
+function deleteBoard(boardId) {
+    domManager.addEventListener(
+        `.delete-board[data-board-id="${boardId}"]`,
+        "click", () => {
+            dataHandler.deleteBoard(boardId).then();
+            let deletedBoard = document.querySelector(`.board[data-board-id="${boardId}"]`);
+            deletedBoard.remove();
+        });
+}
+
+function addStatusToBoard(boardId) {
+    domManager.addEventListener(
+        `.add-status[data-board-id="${boardId}"]`,
+        "click", ()=>{
+            const inputText = document.querySelector(`.new-status-name[data-board-id="${boardId}"]`);
+            const statusTitle = inputText.value;
+            if (statusTitle !== '') {
+                statusesManager.addStatusToBoard(boardId, statusTitle).then();
+            }
+        });
 }
 
 
@@ -94,11 +102,3 @@ async function getNewBoardName() {
         buttonContainer.removeChild(submitButton);
     })
   }
-
-function renameBoard(boardId) {
-    domManager.addEventListener(`#heading-${boardId} h5`, "click",  (e) => {
-        if (!document.querySelector("#new-name-input")){
-            domManager.titleToInputHandler(e, boardId, dataHandler.renameBoard);
-        }
-    })
-}
