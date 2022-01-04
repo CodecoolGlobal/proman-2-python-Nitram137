@@ -94,6 +94,7 @@ def get_statuses_for_board(board_id):
         """
         SELECT * FROM statuses
         WHERE board_id = %(board_id)s
+        ORDER BY id
         ;
         """
         , {"board_id": board_id})
@@ -212,3 +213,33 @@ def delete_card(card_id):
         WHERE card_order > %(card_order)s AND status_id = %(card_status)s;
         """, {"card_order": card_order, "card_status": card_status}
     )
+
+
+def is_board_name_exist(board_title):
+    data = data_manager.execute_select(
+        """
+        SELECT EXISTS(SELECT 1 FROM boards WHERE title=%(board_title)s)
+        """, {"board_title": board_title},
+        fetchall=False
+    )
+    return data["exists"]
+
+
+def is_status_name_exist(board_id, status_title):
+    data = data_manager.execute_select(
+        """
+        SELECT EXISTS(SELECT 1 FROM statuses WHERE title=%(board_title)s AND board_id=%(board_id)s)
+        """, {"status_title": status_title, "board_id": board_id},
+        fetchall=False
+    )
+    return data["exists"]
+
+
+def is_card_name_exist(status_id, card_title):
+    data = data_manager.execute_select(
+        """
+        SELECT EXISTS(SELECT 1 FROM cards WHERE title=%(card_title)s AND status_id = %(status_id)s)
+        """, {"card_title": card_title, "status_id": status_id},
+        fetchall=False
+    )
+    return data["exists"]
