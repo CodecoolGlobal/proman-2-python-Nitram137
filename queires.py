@@ -103,38 +103,26 @@ def get_statuses_for_board(board_id):
 
 
 def insert_new_status(status_title, board_id):
-    data_manager.execute_insert(
-        """
-        INSERT INTO statuses(title, board_id)
-        VALUES(%(status_title)s, %(board_id)s);"""
-        , {"status_title": status_title, "board_id": board_id})
-
     return data_manager.execute_select(
         """
-        SELECT * FROM statuses
-        where board_id = %(board_id)s and title = %(status_title)s
-        ;""", {"status_title": status_title, "board_id": board_id}, fetchall=False
-    )
+        INSERT INTO statuses(title, board_id)
+        VALUES(%(status_title)s, %(board_id)s)
+        RETURNING *;"""
+        , {"status_title": status_title, "board_id": board_id}, fetchall=False)
 
 
 def insert_new_card(card_title, board_id, status_id):
     max_card_order = get_last_card_order(status_id)["max_card_order"]
 
-    data_manager.execute_insert(
+    return data_manager.execute_select(
         """
         INSERT INTO cards(title, board_id, status_id, card_order)
-        VALUES(%(card_title)s, %(board_id)s, %(status_id)s, %(max_card_order)s + 1);"""
+        VALUES(%(card_title)s, %(board_id)s, %(status_id)s, %(max_card_order)s + 1)
+        RETURNING *;"""
         , {"card_title": card_title,
            "board_id": board_id,
            "status_id": status_id,
-           "max_card_order": max_card_order})
-
-    return data_manager.execute_select(
-        """
-        SELECT * FROM cards
-        where title = %(card_title)s and board_id = %(board_id)s and status_id = %(status_id)s
-        ;""", {"card_title": card_title, "board_id": board_id, "status_id": status_id}, fetchall=False
-    )
+           "max_card_order": max_card_order}, fetchall=False)
 
 
 def insert_new_board(board_name):
