@@ -34,7 +34,6 @@ function saveTitle(id, dataHandlerFunc) {
       const newTitle = document.querySelector("#new-name-input").value;
       dataHandlerFunc(id, newTitle).then();
       clickEventInputField.parentNode.innerHTML = `${newTitle}`;
-      document.removeEventListener('mousedown', )
     }
   })
 }

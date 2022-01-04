@@ -85,7 +85,6 @@ async function getNewBoardName() {
     const submitButton = document.createElement("button");
     submitButton.setAttribute("type", "button");
     submitButton.textContent = "Save";
-    const boardBuilder = htmlFactory(htmlTemplates.board);
     const boardNameInput = document.createElement("input");
     boardNameInput.setAttribute("id", "board-name-input");
     boardNameInput.setAttribute("name", "board-name-input");
