@@ -126,7 +126,17 @@ def rename_board(board_id, new_board_name):
         WHERE id = %(board_id)s
         ;
         """,
-    {"board_id": board_id, "new_board_name": new_board_name})
+        {"board_id": board_id, "new_board_name": new_board_name})
+
+
+def rename_status(status_id, new_status_name):
+    data_manager.execute_insert(
+        """
+        UPDATE statuses
+        SET title = %(new_status_name)s
+        WHERE id = %(status_id)s
+        """,
+        {"status_id": status_id, "new_status_name": new_status_name})
 
 
 def rename_card(card_id, new_card_name):
@@ -137,7 +147,7 @@ def rename_card(card_id, new_card_name):
         WHERE id = %(card_id)s
         ;
         """,
-    {"card_id": card_id, "new_card_name": new_card_name})
+        {"card_id": card_id, "new_card_name": new_card_name})
 
 
 def delete_board(board_id):

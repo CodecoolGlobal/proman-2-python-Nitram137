@@ -52,7 +52,7 @@ function boardBuilder(board) {
 function statusBuilder(status) {
     return `
     <div class="status col" data-status-id="${status.id}">    
-        <div class="status-header">
+        <div class="status-header" data-status-id="${status.id}">
             <h6>${status.title}</h6>
             <button type="button" class="btn-close delete-status" data-status-id="${status.id}"></button>
             <input type="text" class="new-card-name" data-status-id="${status.id}">

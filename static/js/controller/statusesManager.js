@@ -15,6 +15,7 @@ export let statusesManager = {
     domManager.addChild(`.board-body[data-board-id="${boardId}"]`, statusHTML);
     addCardToStatus(boardId, status.id);
     deleteStatusEvent(status.id);
+    renameStatus(status.id);
   },
 };
 
@@ -35,5 +36,15 @@ function addCardToStatus(boardId, statusId) {
       const inputText = document.querySelector(`.new-card-name[data-status-id="${statusId}"]`);
       const cardTitle = inputText.value;
       if (cardTitle !== '') cardsManager.addCardToStatus(boardId, statusId, cardTitle).then();
+    })
+}
+
+function renameStatus(statusId) {
+    domManager.addEventListener(
+        `.status-header[data-status-id="${statusId}"] h6`,
+        "click",  (e) => {
+        if (!document.querySelector("#new-name-input")){
+            domManager.titleToInputHandler(e, statusId, dataHandler.renameStatus);
+        }
     })
 }

@@ -30,7 +30,7 @@ async function LoadBoard(board) {
     const boardBuilder = htmlFactory(htmlTemplates.board);
     const content = boardBuilder(board);
     domManager.addChild("#root", content);
-    renameBoard(board.id, board.title);
+    renameBoard(board.id);
     console.log(document.querySelector(`.delete-board[data-board-id="${board.id}"]`));
     domManager.addEventListener(
         `.delete-board[data-board-id="${board.id}"]`,
@@ -95,25 +95,10 @@ async function getNewBoardName() {
     })
   }
 
-function renameBoard(boardId, boardTitle) {
+function renameBoard(boardId) {
     domManager.addEventListener(`#heading-${boardId} h5`, "click",  (e) => {
-        if (!document.querySelector("#new-board-name")){
-            boardTitleToInputToTitleHandler(e, boardId, boardTitle);
+        if (!document.querySelector("#new-name-input")){
+            domManager.titleToInputHandler(e, boardId, dataHandler.renameBoard);
         }
     })
-}
-
-function boardTitleToInputToTitleHandler(clickEvent, boardId, boardTitle ) {
-    const boardTitleText = document.querySelector(`#heading-${boardId} h5`);
-    const saveBtn = document.querySelector(`#save-board-btn-${boardId}`);
-    boardTitleText.innerHTML = `<input type="text" id="new-board-name" name="new-board-name" value="${boardTitle}">`;
-    saveBtn.style.display = "flex";
-
-    saveBtn.addEventListener("click", () => {
-        boardTitle = document.querySelector("#new-board-name").value;
-        dataHandler.renameBoard(boardId, boardTitle);
-        boardTitleText.innerHTML = `${boardTitle}`;
-        saveBtn.style.display = "none";
-        renameBoard(boardId, boardTitle);
-    });
 }

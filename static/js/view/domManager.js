@@ -1,3 +1,5 @@
+import {dataHandler} from "../data/dataHandler.js";
+
 export let domManager = {
   addChild(parentIdentifier, childContent) {
     const parent = document.querySelector(parentIdentifier);
@@ -15,4 +17,25 @@ export let domManager = {
       console.error("could not find such html element: " + parentIdentifier);
     }
   },
+  titleToInputHandler(clickEvent, id, dataHandlerFunc) {
+    let oldName = clickEvent.target.innerText;
+    const inputField = `<input type="text" id="new-name-input" name="new-name-input" value="${oldName}">`;
+    const titleText = clickEvent.target
+    titleText.innerHTML = inputField
+    saveTitle(id, dataHandlerFunc);
+  },
 };
+
+function saveTitle(id, dataHandlerFunc) {
+  domManager.addEventListener('#new-name-input','keypress', function (e) {
+    const clickEventInputField = e.target;
+    if (e.key === 'Enter') {
+      const newTitle = document.querySelector("#new-name-input").value;
+      console.log(newTitle);
+      dataHandlerFunc(id, newTitle).then();
+      clickEventInputField.parentNode.innerHTML = `${newTitle}`
+    }
+  })
+}
+
+

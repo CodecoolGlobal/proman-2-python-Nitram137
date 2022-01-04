@@ -120,6 +120,14 @@ def rename_card(card_id: int):
         return queires.rename_card(card_id, body['title'])
 
 
+@app.route("/api/status/<int:status_id>/rename/", methods=['GET', 'PUT'])
+@json_response
+def rename_status(status_id: int):
+    if request.method == "PUT":
+        body = request.json
+        return queires.rename_status(status_id, body['title'])
+
+
 @app.route("/api/board/<int:board_id>/delete", methods=['DELETE'])
 @json_response
 def delete_board(board_id: int):
