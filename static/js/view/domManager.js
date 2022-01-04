@@ -23,6 +23,7 @@ export let domManager = {
     const titleText = clickEvent.target
     titleText.innerHTML = inputField
     saveTitle(id, dataHandlerFunc);
+    closeInput(clickEvent.target, oldName);
   },
 };
 
@@ -31,11 +32,20 @@ function saveTitle(id, dataHandlerFunc) {
     const clickEventInputField = e.target;
     if (e.key === 'Enter') {
       const newTitle = document.querySelector("#new-name-input").value;
-      console.log(newTitle);
       dataHandlerFunc(id, newTitle).then();
-      clickEventInputField.parentNode.innerHTML = `${newTitle}`
+      clickEventInputField.parentNode.innerHTML = `${newTitle}`;
+      document.removeEventListener('mousedown', )
     }
   })
 }
 
-
+function closeInput(target, oldName) {
+  document.addEventListener('mousedown', function closeEvent(e) {
+    if (document.querySelector("#new-name-input")) {
+      let x = e.x, y = e.y;
+      if (document.elementFromPoint(x, y) !== document.querySelector("#new-name-input")) target.innerText = oldName;
+    } else {
+      document.removeEventListener('mousedown', closeEvent);
+    }
+  });
+}
