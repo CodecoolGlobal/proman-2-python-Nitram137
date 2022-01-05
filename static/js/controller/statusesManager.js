@@ -72,13 +72,10 @@ function dropOnStatusHeader(statusId) {
         (e) => {
             const draggable = document.querySelector('.dragging');
             const tableParent = e.currentTarget.parentElement.parentElement;
-            const statusParent = e.currentTarget;
-            dataHandler.deleteCard(draggable.getAttribute("data-card-id")).then();
-
-            dataHandler.createNewCard(
-                draggable.children[0].innerHTML,
+            dataHandler.replaceCard(
+                +draggable.getAttribute("data-card-id"),
                 +tableParent.getAttribute("data-board-id"),
-                +statusParent.getAttribute("data-status-id")).then();
+                statusId).then();
         }
     )
 }
@@ -108,13 +105,10 @@ function dropOnStatusBody(statusId) {
             const cardPosition = getDragAfterElement(e.currentTarget, e.clientY).position;
             const draggable = document.querySelector('.dragging');
             const tableParent = e.currentTarget.parentElement.parentElement;
-            const statusParent = e.currentTarget;
-            dataHandler.deleteCard(draggable.getAttribute("data-card-id")).then();
-
-            dataHandler.createNewCard(
-                draggable.children[0].innerHTML,
+            dataHandler.replaceCard(
+                +draggable.getAttribute("data-card-id"),
                 +tableParent.getAttribute("data-board-id"),
-                +statusParent.getAttribute("data-status-id"),
+                statusId,
                 cardPosition).then();
         }
     )

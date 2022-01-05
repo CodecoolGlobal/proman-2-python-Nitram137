@@ -112,6 +112,13 @@ def create_card(status_id: int, board_id: int):
         return queires.insert_new_card(request.json['cardTitle'], board_id, status_id, request.json['cardPosition'])
 
 
+@app.route("/api/boards/<int:board_id>/statuses/<int:status_id>/cards/<int:card_id>", methods=['PUT'])
+@json_response
+def replace_card(status_id: int, board_id: int, card_id: int):
+    if request.method == 'PUT':
+        return queires.replace_card(card_id, board_id, status_id, request.json['cardPosition'])
+
+
 @app.route("/api/cards/<int:card_id>/rename/", methods=['GET', 'PUT'])
 @json_response
 def rename_card(card_id: int):

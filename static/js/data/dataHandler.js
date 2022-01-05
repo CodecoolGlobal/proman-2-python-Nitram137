@@ -33,6 +33,12 @@ export let dataHandler = {
         {cardTitle: cardTitle, cardPosition: cardPosition});
     return response;
   },
+  replaceCard: async function(cardId, boardId, statusId, cardPosition = 0) {
+    const response = await apiPut(
+        `/api/boards/${boardId}/statuses/${statusId}/cards/${cardId}`,
+        {cardPosition: cardPosition})
+    return response;
+  },
   renameBoard: async function (boardId, newBoardName) {
     const payLoad = {title: newBoardName};
     await apiPut(`/api/boards/${boardId}/rename/`, payLoad);

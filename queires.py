@@ -133,6 +133,22 @@ def insert_new_card(card_title, board_id, status_id, card_position):
            "card_position": card_position}, fetchall=False)
 
 
+def replace_card(card_id, board_id, status_id, new_position):
+    if new_position == 0:
+        new_position = get_last_card_order(status_id)["max_card_order"] + 1
+
+    data_manager.execute_insert("""
+        UPDATE cards
+        SET card_order = %(new_position)s, board_id = %(board_id)s, status_id = %(status_id)s
+        WHERE id = %(card_id)s;
+        """, {"card_id": card_id, "board_id": board_id, "status_id": status_id, "new_position": new_position})
+    data_manager.execute_insert("""
+        UPDATE cards
+        SET card_order = card_order + 1
+        WHERE card_order >= %(card_position)s AND status_id = %(status_id)s;
+        """, {"card_position": new_position, "status_id": status_id})
+
+
 def insert_new_board(board_name):
     return data_manager.execute_select(
         """
