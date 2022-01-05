@@ -51,7 +51,7 @@ function boardBuilder(board) {
 
 function statusBuilder(status) {
     return `
-    <div class="status col" data-status-id="${status.id}">    
+    <div class="status col" data-status-id="${status.id}">
         <div class="status-header" data-status-id="${status.id}">
             <h6>${status.title}</h6>
             <button type="button" class="btn-close delete-status" data-status-id="${status.id}"></button>
@@ -66,7 +66,7 @@ function statusBuilder(status) {
 
 function cardBuilder(card) {
     return `
-    <div class="card" data-card-id="${card.id}">   
+    <div class="card" draggable="true" data-card-id="${card.id}">   
         <p class="card-text" data-card-id="${card.id}">${card.title}</p>
         <button type="button" class="btn-close delete-card" data-card-id="${card.id}"></button>
     </div>`;

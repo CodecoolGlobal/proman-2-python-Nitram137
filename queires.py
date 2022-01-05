@@ -126,11 +126,12 @@ def insert_new_card(card_title, board_id, status_id):
 
 
 def insert_new_board(board_name):
-    data_manager.execute_insert(
+    return data_manager.execute_select(
         """
         INSERT INTO boards(title)
-        VALUES(%(board_name)s);"""
-        , {"board_name": board_name})
+        VALUES(%(board_name)s)
+        RETURNING *;"""
+        , {"board_name": board_name}, fetchall=False)
 
 
 def rename_board(board_id, new_board_name):

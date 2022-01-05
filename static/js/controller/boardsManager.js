@@ -91,9 +91,7 @@ async function getNewBoardName() {
     buttonContainer.appendChild(boardNameInput);
     buttonContainer.appendChild(submitButton);
     submitButton.addEventListener("click", async () => {
-        await dataHandler.createNewBoard(boardNameInput.value);
-        const boards = await dataHandler.getBoards();
-        const lastBoard = boards[boards.length - 1];
+        let lastBoard = await dataHandler.createNewBoard(boardNameInput.value);
         await LoadBoard(lastBoard);
         await addDefaultStatusToBoard(lastBoard.id);
 

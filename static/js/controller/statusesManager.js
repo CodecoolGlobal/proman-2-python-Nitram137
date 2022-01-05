@@ -16,6 +16,8 @@ export let statusesManager = {
     addCardToStatus(boardId, status.id);
     deleteStatusEvent(status.id);
     renameStatus(status.id);
+    dragOverStatusHeader(status.id);
+    dragOverStatusBody(status.id);
   },
 };
 
@@ -47,4 +49,48 @@ function renameStatus(statusId) {
             domManager.titleToInputHandler(e, statusId, dataHandler.renameStatus);
         }
     })
+}
+
+function dragOverStatusHeader(statusId) {
+    domManager.addEventListener(
+        `.status-header[data-status-id="${statusId}`,
+        'dragover',
+        (e) => {
+            e.preventDefault();
+            let statusBody = e.currentTarget.nextElementSibling;
+            const draggable = document.querySelector('.dragging');
+            statusBody.appendChild(draggable);
+        });
+}
+
+
+function dragOverStatusBody(statusId) {
+    domManager.addEventListener(
+        `.status-body[data-status-id="${statusId}"]`,
+        'dragover',
+        (e) => {
+            e.preventDefault();
+            const afterElement = getDragAfterElement(e.currentTarget, e.clientY);
+            const draggable = document.querySelector('.dragging');
+            if (afterElement == null) {
+              e.currentTarget.appendChild(draggable);
+            } else {
+              e.currentTarget.insertBefore(draggable, afterElement);
+            }
+        }
+    )
+}
+
+function getDragAfterElement(container, y) {
+  const draggableElements = [...container.querySelectorAll('.card:not(.dragging)')]
+
+  return draggableElements.reduce((closest, child) => {
+    const box = child.getBoundingClientRect();
+    const offset = y - box.top - box.height / 2;
+    if (offset < 0 && offset > closest.offset) {
+      return { offset: offset, element: child };
+    } else {
+      return closest;
+    }
+  }, { offset: Number.NEGATIVE_INFINITY }).element;
 }

@@ -12,7 +12,8 @@ export let cardsManager = {
     const cardHTML = cardBuilder(card);
     domManager.addChild(`.status-body[data-status-id="${statusId}"]`, cardHTML);
     renameCard(card.id);
-    deleteCard(card.id)
+    deleteCard(card.id);
+    dragCard(card.id);
   }
 };
 
@@ -33,5 +34,14 @@ function renameCard(cardId) {
       if (!document.querySelector("#new-name-input")){
           domManager.titleToInputHandler(e, cardId, dataHandler.renameCard);
       }
+    });
+}
+
+function dragCard(cardId) {
+    domManager.addEventListener(`.card[data-card-id="${cardId}"]`, "dragstart", (e) => {
+        e.currentTarget.classList.add('dragging');
+    });
+    domManager.addEventListener(`.card[data-card-id="${cardId}"]`, "dragend", (e) => {
+         e.currentTarget.classList.remove('dragging');
     });
 }

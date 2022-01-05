@@ -19,3 +19,7 @@ h5 {
     width: fit-content;
     block-size: fit-content
 }
+
+.dragging {
+    opacity: .5;
+}
