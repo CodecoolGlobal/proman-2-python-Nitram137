@@ -22,11 +22,15 @@ export let dataHandler = {
     return await apiPost("/api/createBoard", payLoad);
   },
   createNewStatus: async function (statusTitle, boardId) {
-    const response = await apiPut(`/api/boards/${boardId}/statuses/`, {statusTitle: statusTitle});
+    const response = await apiPut(
+        `/api/boards/${boardId}/statuses/`,
+        {statusTitle: statusTitle});
     return response;
   },
-  createNewCard: async function (cardTitle, boardId, statusId) {
-    const response = await apiPut(`/api/boards/${boardId}/statuses/${statusId}/cards`, {cardTitle: cardTitle});
+  createNewCard: async function (cardTitle, boardId, statusId, cardPosition = 0) {
+    const response = await apiPut(
+        `/api/boards/${boardId}/statuses/${statusId}/cards`,
+        {cardTitle: cardTitle, cardPosition: cardPosition});
     return response;
   },
   renameBoard: async function (boardId, newBoardName) {

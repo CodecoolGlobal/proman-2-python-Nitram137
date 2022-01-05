@@ -18,6 +18,8 @@ export let statusesManager = {
     renameStatus(status.id);
     dragOverStatusHeader(status.id);
     dragOverStatusBody(status.id);
+    dropOnStatusHeader(status.id);
+    dropOnStatusBody(status.id);
   },
 };
 
@@ -63,6 +65,23 @@ function dragOverStatusHeader(statusId) {
         });
 }
 
+function dropOnStatusHeader(statusId) {
+    domManager.addEventListener(
+        `.status-header[data-status-id="${statusId}`,
+        'drop',
+        (e) => {
+            const draggable = document.querySelector('.dragging');
+            const tableParent = e.currentTarget.parentElement.parentElement;
+            const statusParent = e.currentTarget;
+            dataHandler.deleteCard(draggable.getAttribute("data-card-id")).then();
+
+            dataHandler.createNewCard(
+                draggable.children[0].innerHTML,
+                +tableParent.getAttribute("data-board-id"),
+                +statusParent.getAttribute("data-status-id")).then();
+        }
+    )
+}
 
 function dragOverStatusBody(statusId) {
     domManager.addEventListener(
@@ -70,7 +89,7 @@ function dragOverStatusBody(statusId) {
         'dragover',
         (e) => {
             e.preventDefault();
-            const afterElement = getDragAfterElement(e.currentTarget, e.clientY);
+            const afterElement = getDragAfterElement(e.currentTarget, e.clientY).element;
             const draggable = document.querySelector('.dragging');
             if (afterElement == null) {
               e.currentTarget.appendChild(draggable);
@@ -81,16 +100,40 @@ function dragOverStatusBody(statusId) {
     )
 }
 
-function getDragAfterElement(container, y) {
-  const draggableElements = [...container.querySelectorAll('.card:not(.dragging)')]
+function dropOnStatusBody(statusId) {
+    domManager.addEventListener(
+        `.status-body[data-status-id="${statusId}"]`,
+        'drop',
+        (e) => {
+            const cardPosition = getDragAfterElement(e.currentTarget, e.clientY).position;
+            const draggable = document.querySelector('.dragging');
+            const tableParent = e.currentTarget.parentElement.parentElement;
+            const statusParent = e.currentTarget;
+            dataHandler.deleteCard(draggable.getAttribute("data-card-id")).then();
 
-  return draggableElements.reduce((closest, child) => {
-    const box = child.getBoundingClientRect();
-    const offset = y - box.top - box.height / 2;
-    if (offset < 0 && offset > closest.offset) {
-      return { offset: offset, element: child };
-    } else {
-      return closest;
-    }
-  }, { offset: Number.NEGATIVE_INFINITY }).element;
+            dataHandler.createNewCard(
+                draggable.children[0].innerHTML,
+                +tableParent.getAttribute("data-board-id"),
+                +statusParent.getAttribute("data-status-id"),
+                cardPosition).then();
+        }
+    )
+}
+
+
+function getDragAfterElement(container, y) {
+    const draggableElements = [...container.querySelectorAll('.card:not(.dragging)')]
+    const lastPosition = draggableElements.length + 1;
+
+    return draggableElements.reduce((closest, child) => {
+        const box = child.getBoundingClientRect();
+        const offset = y - box.top - box.height / 2;
+        if (offset < 0) {
+            closest.position -= 1;
+            if (offset > closest.offset) {
+                return { offset: offset, element: child, position: closest.position};
+            }
+        }
+        return closest;
+    }, { offset: Number.NEGATIVE_INFINITY, position: lastPosition });
 }

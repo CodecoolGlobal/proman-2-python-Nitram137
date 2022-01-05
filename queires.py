@@ -111,18 +111,26 @@ def insert_new_status(status_title, board_id):
         , {"status_title": status_title, "board_id": board_id}, fetchall=False)
 
 
-def insert_new_card(card_title, board_id, status_id):
-    max_card_order = get_last_card_order(status_id)["max_card_order"]
+def insert_new_card(card_title, board_id, status_id, card_position):
+    if card_position == 0:
+        card_position = get_last_card_order(status_id)["max_card_order"] + 1
 
+    data_manager.execute_insert(
+        """
+        UPDATE cards
+        SET card_order = card_order + 1
+        WHERE card_order >= %(card_position)s AND status_id = %(status_id)s;
+        """, {"card_position": card_position, "status_id": status_id}
+    )
     return data_manager.execute_select(
         """
         INSERT INTO cards(title, board_id, status_id, card_order)
-        VALUES(%(card_title)s, %(board_id)s, %(status_id)s, %(max_card_order)s + 1)
+        VALUES(%(card_title)s, %(board_id)s, %(status_id)s, %(card_position)s)
         RETURNING *;"""
         , {"card_title": card_title,
            "board_id": board_id,
            "status_id": status_id,
-           "max_card_order": max_card_order}, fetchall=False)
+           "card_position": card_position}, fetchall=False)
 
 
 def insert_new_board(board_name):
@@ -185,22 +193,19 @@ def delete_status(status_id):
 
 
 def delete_card(card_id):
-    card_data = get_card_data(card_id)
-    card_order = card_data["card_order"]
-    card_status = card_data["status_id"]
-
-    data_manager.execute_insert(
+    card_data = data_manager.execute_select(
         """
         DELETE FROM cards
-        WHERE id = %(card_id)s;
-        """, {"card_id": card_id}
+        WHERE id = %(card_id)s
+        RETURNING *;
+        """, {"card_id": card_id}, fetchall=False
     )
     data_manager.execute_insert(
         """
         UPDATE cards
         SET card_order = card_order - 1
         WHERE card_order > %(card_order)s AND status_id = %(card_status)s;
-        """, {"card_order": card_order, "card_status": card_status}
+        """, {"card_order":  card_data["card_order"], "card_status": card_data["status_id"]}
     )
 
 
