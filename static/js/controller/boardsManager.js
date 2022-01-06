@@ -10,9 +10,11 @@ export let boardsManager = {
     loadBoards: async function () {
         const buttonBuilder = htmlFactory(htmlTemplates.button);
         const newPublicBoardButton = buttonBuilder("public", "create-public-board-button", '+ New Public Board');
-        const newPrivateBoardButton = buttonBuilder("private", "create-private-board-button", '+ New Private Board');
         domManager.addChild("#root", newPublicBoardButton);
-        domManager.addChild("#root", newPrivateBoardButton);
+        if (userIdInSession !== '0'){
+            const newPrivateBoardButton = buttonBuilder("private", "create-private-board-button", '+ New Private Board');
+            domManager.addChild("#root", newPrivateBoardButton);
+        }
 
         const boards = await dataHandler.getBoards(userIdInSession);
 
@@ -82,7 +84,9 @@ async function addDefaultStatusToBoard(boardId) {
 
 function inputButton(){
     domManager.addEventListener('#create-public-board-button', 'click', () => {getNewBoardName('public')});
-    domManager.addEventListener('#create-private-board-button', 'click', () => {getNewBoardName('private')});
+    if (userIdInSession !== '0'){
+        domManager.addEventListener('#create-private-board-button', 'click', () => {getNewBoardName('private')});
+    }
 }
 
 async function getNewBoardName(publicOrPrivate) {
@@ -97,7 +101,12 @@ async function getNewBoardName(publicOrPrivate) {
     buttonContainer.appendChild(boardNameInput);
     buttonContainer.appendChild(submitButton);
     submitButton.addEventListener("click", async () => {
-        let lastBoard = await dataHandler.createNewBoard(boardNameInput.value);
+        let lastBoard;
+        if (submitButton.getAttribute("id") === "public-save-button"){
+            lastBoard = await dataHandler.createNewBoard(boardNameInput.value, null);
+        }else if (submitButton.getAttribute("id") === "private-save-button"){
+            lastBoard = await dataHandler.createNewBoard(boardNameInput.value, userIdInSession);
+        }
         await LoadBoard(lastBoard);
         await addDefaultStatusToBoard(lastBoard.id);
 

@@ -76,7 +76,7 @@ def get_boards(user_id):
 def create_new_board():
     if request.method == "POST":
         body = request.json
-        return queires.insert_new_board(body['title'])
+        return queires.insert_new_board(body['title'], body['user_id'])
 
 
 @app.route("/api/boards/<int:board_id>/cards/")

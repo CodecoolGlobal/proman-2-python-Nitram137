@@ -73,3 +73,20 @@ h5 {
 .card-text {
     margin: 10px;
 }
+
+.toggle-button-and-board-name{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.board-name{
+    margin-left: 10px;
+}
+
+#create-public-board-button{
+    margin-bottom: 10px;
+}
+
+#create-private-board-button{
+    margin-bottom: 20px;
+}
