@@ -21,10 +21,10 @@ export function htmlFactory(template) {
     }
 }
 
-function buttonBuilder(buttonClass="", buttonId ="") {
+function buttonBuilder(id="", buttonId ="", innerText="") {
     return `
-    <div class="button-container">
-        <button type="button" class="${buttonClass}" id="${buttonId}">+ New Board</button>
+    <div class="button-container" id="${id}-button-container">
+        <button type="button" id="${buttonId}">${innerText}</button>
     </div>`;
 }
 
@@ -34,7 +34,7 @@ function boardBuilder(board) {
         <div class="board-header card">
              <div class="card-header d-flex" id="heading-${board.id}">
                  <h5 class="mb-0">${board.title}</h5>
-                 <a href="#collapse-${board.id}" data-toggle="collapse"></a>
+                 <a href="#collapse-${board.id}" data-toggle="collapse">hjhj</a>
                  <div class="add-status">
                     <input type="text" class="new-status-name" data-board-id="${board.id}">
                     <button class="add-status" data-board-id="${board.id}">Add status</button>

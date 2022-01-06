@@ -5,13 +5,14 @@ import { cardsManager } from "./cardsManager.js";
 import { statusesManager } from "./statusesManager.js";
 
 let userIdInSession = document.querySelector("#username") ? document.querySelector("#username").dataset.userId : '0';
-console.log(userIdInSession);
 
 export let boardsManager = {
     loadBoards: async function () {
         const buttonBuilder = htmlFactory(htmlTemplates.button);
-        const content = buttonBuilder("create-board-button");
-        domManager.addChild("#root", content);
+        const newPublicBoardButton = buttonBuilder("public", "create-public-board-button", '+ New Public Board');
+        const newPrivateBoardButton = buttonBuilder("private", "create-private-board-button", '+ New Private Board');
+        domManager.addChild("#root", newPublicBoardButton);
+        domManager.addChild("#root", newPrivateBoardButton);
 
         const boards = await dataHandler.getBoards(userIdInSession);
 
@@ -80,17 +81,19 @@ async function addDefaultStatusToBoard(boardId) {
 }
 
 function inputButton(){
-    domManager.addEventListener('.create-board-button', 'click', getNewBoardName)
+    domManager.addEventListener('#create-public-board-button', 'click', () => {getNewBoardName('public')});
+    domManager.addEventListener('#create-private-board-button', 'click', () => {getNewBoardName('private')});
 }
 
-async function getNewBoardName() {
-    const buttonContainer = document.querySelector(".button-container");
+async function getNewBoardName(publicOrPrivate) {
+    const buttonContainer = document.querySelector(`#${publicOrPrivate}-button-container`);
     const submitButton = document.createElement("button");
     submitButton.setAttribute("type", "button");
+    submitButton.setAttribute("id", `${publicOrPrivate}-save-button`);
     submitButton.textContent = "Save";
     const boardNameInput = document.createElement("input");
-    boardNameInput.setAttribute("id", "board-name-input");
-    boardNameInput.setAttribute("name", "board-name-input");
+    boardNameInput.setAttribute("id", `${publicOrPrivate}-board-name-input`);
+    boardNameInput.setAttribute("name", `${publicOrPrivate}-board-name-input`);
     buttonContainer.appendChild(boardNameInput);
     buttonContainer.appendChild(submitButton);
     submitButton.addEventListener("click", async () => {
