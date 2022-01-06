@@ -1,7 +1,8 @@
-body {
+section {
     background-image: url("gentleman.png");
     background-repeat: no-repeat;
-    background-position: right;
+    background-position-x: right;
+    background-position-y: top;
 }
 
 
