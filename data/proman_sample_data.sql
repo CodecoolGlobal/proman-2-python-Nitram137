@@ -33,7 +33,11 @@ CREATE TABLE statuses (
 
 CREATE TABLE boards (
     id          SERIAL PRIMARY KEY  NOT NULL,
-    title       VARCHAR(200)        NOT NULL
+    title       VARCHAR(200)        NOT NULL,
+    user_id integer
+		constraint boards_users_id_fk
+			references users
+				on delete cascade
 );
 
 CREATE TABLE cards (

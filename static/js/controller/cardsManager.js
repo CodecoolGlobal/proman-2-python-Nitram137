@@ -38,26 +38,37 @@ function renameCard(cardId) {
 }
 
 function dragCard(cardId) {
-    domManager.addEventListener(`.card[data-card-id="${cardId}"]`, "dragstart", (e) => {
-        dragToNowhere(cardId);
-        e.currentTarget.classList.add('dragging');
+    let boxes = [];
+    let nextElement;
+    const statuses = [...document.querySelectorAll(`.status`)];
+    const statusContainer = document.querySelector(`.card[data-card-id="${cardId}"]`).parentElement;
+    statuses.forEach((e) => {
+        boxes.push(e.getBoundingClientRect());
     });
-    domManager.addEventListener(`.card[data-card-id="${cardId}"]`, "dragend", (e) => {
-        e.currentTarget.classList.remove('dragging');
-    });
-}
+    const dragToNowhere = (e) => {
+        const draggable = document.querySelector('.dragging');
+        let x = e.clientX, y = e.clientY;
 
-function dragToNowhere(cardId) {
-    const statusContainer = document.querySelector(`.card[data-card-id="${cardId}"]`).parentElement
-    document.addEventListener('dragover', (e) => {
-        let statuses = [...document.querySelectorAll(`.status`)]
-
-        let x = e.clientX, y = e.clientX;
-        let pointedElement = document.elementFromPoint(x, y);
-        for (let status of statuses) {
-            if (pointedElement === status) {
+        for (let box of boxes) {
+            if (box.top < y && box.bottom > y && box.left < x && box.right > x) {
                 return;
             }
         }
-    })
+        if (nextElement) {
+            statusContainer.insertBefore(draggable, nextElement);
+        } else {
+            statusContainer.appendChild(draggable);
+        }
+    }
+
+    domManager.addEventListener(`.card[data-card-id="${cardId}"]`, "dragstart", (e) => {
+        e.currentTarget.classList.add('dragging');
+        nextElement = document.querySelector(`.card[data-card-id="${cardId}"]`).nextElementSibling;
+        document.addEventListener('dragover', dragToNowhere)
+    });
+
+    domManager.addEventListener(`.card[data-card-id="${cardId}"]`, "dragend", (e) => {
+        e.currentTarget.classList.remove('dragging');
+        document.removeEventListener('dragover', dragToNowhere);
+    });
 }
