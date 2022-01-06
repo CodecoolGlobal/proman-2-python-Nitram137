@@ -52,7 +52,7 @@
                         {% endif %}
                     </ul>
                     {% if 'username' in session %}
-                    <span class="navbar-text">
+                    <span id="username" class="navbar-text" data-user-id="{{ session['user_id'] }}">
                         Signed in as {{ username }}
                     </span>
                     {% else %}

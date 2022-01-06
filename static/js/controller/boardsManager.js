@@ -4,13 +4,16 @@ import { domManager } from "../view/domManager.js";
 import { cardsManager } from "./cardsManager.js";
 import { statusesManager } from "./statusesManager.js";
 
+let userIdInSession = document.querySelector("#username") ? document.querySelector("#username").dataset.userId : '0';
+console.log(userIdInSession);
+
 export let boardsManager = {
     loadBoards: async function () {
         const buttonBuilder = htmlFactory(htmlTemplates.button);
         const content = buttonBuilder("create-board-button");
         domManager.addChild("#root", content);
 
-        const boards = await dataHandler.getBoards();
+        const boards = await dataHandler.getBoards(userIdInSession);
 
         for (let board of boards) {
             LoadBoard(board).then();

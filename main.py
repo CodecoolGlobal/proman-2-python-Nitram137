@@ -39,11 +39,11 @@ def registration():
 def login():
     if request.method == "POST":
         current_user = queires.login_user(request.form['user_name'])
-        print(current_user, len(current_user))
         input_password = request.form['user_password']
         if len(current_user) > 0:
             if util.verify_password(input_password, current_user[0]['password_hashed']):
                 session['username'] = current_user[0]['username']
+                session['user_id'] = current_user[0]['id']
                 return redirect('/')
             else:
                 msg = "Wrong Password try again!"
@@ -65,10 +65,10 @@ def logout():
     return redirect('/')
 
 
-@app.route("/api/boards", methods=["GET", "POST", "PUT"])
+@app.route("/api/boards/<user_id>", methods=["GET", "POST", "PUT"])
 @json_response
-def get_boards():
-    return queires.get_boards()
+def get_boards(user_id):
+    return queires.get_boards(user_id)
 
 
 @app.route("/api/createBoard", methods=["POST"])
