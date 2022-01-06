@@ -15,5 +15,5 @@ create unique index users_username_uindex
 
 alter table users
 	add constraint users_pk
-		primary key (username);
+		primary key (id);
 
