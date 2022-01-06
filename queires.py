@@ -151,13 +151,13 @@ def replace_card(card_id, board_id, status_id, new_position):
         """, {"card_position": new_position, "status_id": status_id})
 
 
-def insert_new_board(board_name):
+def insert_new_board(board_name, user_id=None):
     return data_manager.execute_select(
         """
-        INSERT INTO boards(title)
-        VALUES(%(board_name)s)
+        INSERT INTO boards(title, user_id)
+        VALUES(%(board_name)s, %(user_id)s)
         RETURNING *;"""
-        , {"board_name": board_name}, fetchall=False)
+        , {"board_name": board_name, "user_id": user_id}, fetchall=False)
 
 
 def rename_board(board_id, new_board_name):
