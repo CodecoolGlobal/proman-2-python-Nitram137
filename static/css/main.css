@@ -23,3 +23,8 @@ h5 {
 .dragging {
     opacity: .5;
 }
+
+.status {
+    margin: 5px;
+    padding : 0px;
+}

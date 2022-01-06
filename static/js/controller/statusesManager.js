@@ -38,7 +38,7 @@ function addCardToStatus(boardId, statusId) {
     `.add-card[data-status-id="${statusId}"]`,
     "click", () => {
       const inputText = document.querySelector(`.new-card-name[data-status-id="${statusId}"]`);
-      const cardTitle = inputText.value;
+      const cardTitle =  inputText.value;
       if (cardTitle !== '') cardsManager.addCardToStatus(boardId, statusId, cardTitle).then();
     })
 }

@@ -51,14 +51,29 @@ function boardBuilder(board) {
 
 function statusBuilder(status) {
     return `
-    <div class="status col" data-status-id="${status.id}">
-        <div class="status-header" data-status-id="${status.id}">
-            <h6>${status.title}</h6>
-            <button type="button" class="btn-close delete-status" data-status-id="${status.id}"></button>
-            <input type="text" class="new-card-name" data-status-id="${status.id}">
-            <button class="add-card" data-status-id="${status.id}">Add card</button>
+    <div class="status col card border-dark mb-3" data-status-id="${status.id}">
+        <div class="status-header card-header" data-status-id="${status.id}">
+            <div class="container">
+                <div class="row">
+                    <div class="col float-left">
+                        <h6>${status.title}</h6>
+                    </div>
+                    <div class="col text-end">
+                        <button type="button" class="close delete-status" aria-label="Close" data-status-id="${status.id}">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <button class="input-group-text add-card btn btn-dark" data-status-id="${status.id}" id="inputGroup-sizing-sm">Add card</button>
+                </div>
+                <input type="text" class="new-card-name form-control"  data-status-id="${status.id}" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+            </div>
         </div>
-        <div class="status-body" data-status-id="${status.id}">
+        <div class="status-body card-body text-dark" data-status-id="${status.id}">
         
         </div>
     </div>`
