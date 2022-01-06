@@ -44,3 +44,12 @@ h5 {
 .rename-input {
     max-width: 150px;
 }
+
+.delete-card {
+    position:absolute;
+    right: 5px;
+}
+
+.card {
+    
+}

@@ -74,8 +74,9 @@ function statusBuilder(status) {
 
 function cardBuilder(card) {
     return `
-    <div class="card" draggable="true" data-card-id="${card.id}">   
-        <p class="card-text" data-card-id="${card.id}">${card.title}</p>
+    <div class="card mb-3 position-relative" draggable="true" data-card-id="${card.id}">
+        
+        <p class="card-text text-center" data-card-id="${card.id}">${card.title}</p>
         <button type="button" class="btn-close delete-card" data-card-id="${card.id}"></button>
     </div>`;
 }
