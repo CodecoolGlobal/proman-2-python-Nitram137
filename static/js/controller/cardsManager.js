@@ -42,6 +42,7 @@ function dragCard(cardId) {
         e.currentTarget.classList.add('dragging');
     });
     domManager.addEventListener(`.card[data-card-id="${cardId}"]`, "dragend", (e) => {
-         e.currentTarget.classList.remove('dragging');
+        e.currentTarget.classList.remove('dragging');
     });
 }
+
