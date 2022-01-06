@@ -36,5 +36,10 @@ h5 {
 
 .status {
     margin: 5px;
-    padding : 0px;
+    padding : 0;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
 }

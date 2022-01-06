@@ -34,16 +34,17 @@ function boardBuilder(board) {
         <div class="board-header card">
              <div class="card-header" id="heading-${board.id}">
                  <h5 class="mb-0">${board.title}</h5>
-                 <button type="button" class="btn-close delete-board" data-board-id="${board.id}"></button>
                  <a href="#collapse-${board.id}" data-toggle="collapse"></a>
+                 <div class="add-status">
+                    <input type="text" class="new-status-name" data-board-id="${board.id}">
+                    <button class="add-status" data-board-id="${board.id}">Add status</button>
+                    <button type="button" class="btn-close delete-board" data-board-id="${board.id}"></button>
+                 </div>
              </div>
         </div>
     
         <div id="collapse-${board.id}" class="collapse show">
-            <div class="board-body row" data-board-id="${board.id}">
-                <input type="text" class="new-status-name" data-board-id="${board.id}">
-                <button class="add-status" data-board-id="${board.id}">Add status</button>
-            </div>
+            <div class="board-body row" data-board-id="${board.id}"></div>
         </div>
     </div>`;
 
