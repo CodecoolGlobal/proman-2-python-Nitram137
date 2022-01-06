@@ -53,19 +53,12 @@ function statusBuilder(status) {
     return `
     <div class="status col card border-dark mb-3" data-status-id="${status.id}">
         <div class="status-header card-header" data-status-id="${status.id}">
-            <div class="container">
-                <div class="row">
-                    <div class="col float-left">
-                        <h6>${status.title}</h6>
-                    </div>
-                    <div class="col text-end">
-                        <button type="button" class="close delete-status" aria-label="Close" data-status-id="${status.id}">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                </div>
+            <h6>${status.title}</h6>
+            <div class="close-container">
+                <button type="button" class="close delete-status" aria-label="Close" data-status-id="${status.id}">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            
             <div class="input-group input-group-sm mb-3">
                 <div class="input-group-prepend">
                     <button class="input-group-text add-card btn btn-dark" data-status-id="${status.id}" id="inputGroup-sizing-sm">Add card</button>

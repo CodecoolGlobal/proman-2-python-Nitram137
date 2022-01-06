@@ -25,6 +25,22 @@ h5 {
 }
 
 .status {
+    position: relative;
     margin: 5px;
     padding : 0px;
+}
+
+.status-header {
+    text-align: center;
+}
+
+.close-container {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    padding: 1px;
+}
+
+.rename-input {
+    max-width: 150px;
 }

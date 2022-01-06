@@ -19,7 +19,7 @@ export let domManager = {
   },
   titleToInputHandler(clickEvent, id, dataHandlerFunc) {
     let oldName = clickEvent.target.innerText;
-    const inputField = `<input type="text" id="new-name-input" name="new-name-input" value="${oldName}">`;
+    const inputField = `<input type="text" class="form-control rename-input" aria-label="Small" id="new-name-input" name="new-name-input" value="${oldName}">`;
     const titleText = clickEvent.target
     titleText.innerHTML = inputField
     saveTitle(id, dataHandlerFunc);
