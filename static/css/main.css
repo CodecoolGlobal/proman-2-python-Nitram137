@@ -24,6 +24,15 @@ h5 {
     opacity: .5;
 }
 
+#plus {
+    font-size: 30px;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+}
+
 .status {
     margin: 5px;
     padding : 0px;
