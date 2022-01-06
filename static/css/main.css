@@ -1,7 +1,8 @@
-body {
+section {
     background-image: url("gentleman.png");
     background-repeat: no-repeat;
-    background-position: right;
+    background-position-x: right;
+    background-position-y: top;
 }
 
 
@@ -24,11 +25,26 @@ h5 {
     opacity: .5;
 }
 
+#plus {
+    font-size: 30px;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+}
+
 .status {
     position: relative;
     margin: 5px;
-    padding : 0px;
+    padding : 0;
 }
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+}
+
 
 .status-header {
     text-align: center;
@@ -51,5 +67,5 @@ h5 {
 }
 
 .card {
-    
+
 }
