@@ -42,7 +42,7 @@ def get_card_status(status_id):
     return status
 
 
-def get_boards():
+def get_boards(user_id=None):
     """
     Gather all boards
     :return:
@@ -50,9 +50,11 @@ def get_boards():
     return data_manager.execute_select(
         """
         SELECT * FROM boards
+        WHERE user_id = %(user_id)s::int OR user_id IS NULL
         ORDER BY id
         ;
-        """
+        """,
+        {"user_id": user_id}
     )
 
 
