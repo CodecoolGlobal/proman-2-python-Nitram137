@@ -70,6 +70,7 @@ function dropOnStatusHeader(statusId) {
         `.status-header[data-status-id="${statusId}`,
         'drop',
         (e) => {
+
             const draggable = document.querySelector('.dragging');
             const tableParent = e.currentTarget.parentElement.parentElement;
             dataHandler.replaceCard(

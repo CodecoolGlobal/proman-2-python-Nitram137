@@ -52,15 +52,15 @@ CREATE TABLE cards (
 --- insert data
 ---
 
-INSERT INTO statuses VALUES (1, 'new', 1);
-INSERT INTO statuses VALUES (2, 'in progress', 1);
-INSERT INTO statuses VALUES (3, 'testing', 1);
-INSERT INTO statuses VALUES (4, 'done', 1);
+INSERT INTO statuses (title, board_id) VALUES ('new', 1);
+INSERT INTO statuses (title, board_id) VALUES ('in progress', 1);
+INSERT INTO statuses (title, board_id) VALUES ('testing', 1);
+INSERT INTO statuses (title, board_id) VALUES ('done', 1);
 
-INSERT INTO statuses VALUES (5, 'new', 2);
-INSERT INTO statuses VALUES (6, 'in progress', 2);
-INSERT INTO statuses VALUES (7, 'testing', 2);
-INSERT INTO statuses VALUES (8, 'done', 2);
+INSERT INTO statuses (title, board_id) VALUES ('new', 2);
+INSERT INTO statuses (title, board_id) VALUES ('in progress', 2);
+INSERT INTO statuses (title, board_id) VALUES ('testing', 2);
+INSERT INTO statuses (title, board_id) VALUES ('done', 2);
 
 INSERT INTO boards(title) VALUES ('Board 1');
 INSERT INTO boards(title) VALUES ('Board 2');
@@ -83,21 +83,13 @@ INSERT INTO cards VALUES (nextval('cards_id_seq'), 2, 8, 'done card 1', 2);
 ---
 
 ALTER TABLE ONLY cards
-    ADD CONSTRAINT fk_cards_board_id FOREIGN KEY (board_id) REFERENCES boards(id);
+    ADD CONSTRAINT fk_cards_board_id FOREIGN KEY (board_id) REFERENCES boards(id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY cards
-    ADD CONSTRAINT fk_cards_status_id FOREIGN KEY (status_id) REFERENCES statuses(id);
+    ADD CONSTRAINT fk_cards_status_id FOREIGN KEY (status_id) REFERENCES statuses(id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY statuses
-    ADD CONSTRAINT fk_statuses_board_id FOREIGN KEY (board_id) REFERENCES boards(id);
-
-alter table cards drop constraint fk_cards_board_id;
-
-alter table cards
-	add constraint fk_cards_board_id
-		foreign key (board_id) references boards
-			on delete cascade;
-
+    ADD CONSTRAINT fk_statuses_board_id FOREIGN KEY (board_id) REFERENCES boards(id) ON DELETE CASCADE;
 
 
 DROP TABLE IF EXISTS linkingBoardStatus;
