@@ -27,7 +27,10 @@ h5 {
 
 #plus {
     font-size: 30px;
-    color: #bf1515;
+    border: solid black;
+    padding: 1px;
+    height: 50px;
+    box-shadow: 2px 2px 2px;
 }
 
 .navbar-brand {
