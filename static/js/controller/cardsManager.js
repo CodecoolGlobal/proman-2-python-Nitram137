@@ -39,6 +39,7 @@ function renameCard(cardId) {
 
 function dragCard(cardId) {
     domManager.addEventListener(`.card[data-card-id="${cardId}"]`, "dragstart", (e) => {
+        dragToNowhere(cardId);
         e.currentTarget.classList.add('dragging');
     });
     domManager.addEventListener(`.card[data-card-id="${cardId}"]`, "dragend", (e) => {
@@ -46,3 +47,17 @@ function dragCard(cardId) {
     });
 }
 
+function dragToNowhere(cardId) {
+    const statusContainer = document.querySelector(`.card[data-card-id="${cardId}"]`).parentElement
+    document.addEventListener('dragover', (e) => {
+        let statuses = [...document.querySelectorAll(`.status`)]
+
+        let x = e.clientX, y = e.clientX;
+        let pointedElement = document.elementFromPoint(x, y);
+        for (let status of statuses) {
+            if (pointedElement === status) {
+                return;
+            }
+        }
+    })
+}
