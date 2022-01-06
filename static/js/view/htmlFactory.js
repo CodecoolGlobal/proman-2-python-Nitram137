@@ -30,7 +30,7 @@ function buttonBuilder(id="", buttonId ="", innerText="") {
 
 function boardBuilder(board) {
     return `
-    <div class="board" data-board-id="${board.id}">
+    <div class="board" data-board-id="${board.id}" data-user-id="${board.user_id}">
         <div class="board-header card">
              <div class="card-header d-flex" id="heading-${board.id}">
                 <div class="toggle-button-and-board-name">

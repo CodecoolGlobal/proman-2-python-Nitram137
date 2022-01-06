@@ -22,6 +22,15 @@ export let boardsManager = {
             LoadBoard(board).then();
         }
         inputButton();
+
+        const boardsDOM = document.querySelectorAll(".board");
+        for (let board of boardsDOM) {
+            if (board.dataset.userId != 'null'){
+                board.querySelector(".board-header").classList.add("private");
+            }
+        }
+
+
     }
 };
 

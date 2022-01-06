@@ -90,3 +90,7 @@ h5 {
 #create-private-board-button{
     margin-bottom: 20px;
 }
+
+.private{
+    background-color: #afafb4;
+}
