@@ -32,7 +32,7 @@ function boardBuilder(board) {
     return `
     <div class="board" data-board-id="${board.id}">
         <div class="board-header card">
-             <div class="card-header" id="heading-${board.id}">
+             <div class="card-header d-flex" id="heading-${board.id}">
                  <h5 class="mb-0">${board.title}</h5>
                  <a href="#collapse-${board.id}" data-toggle="collapse"></a>
                  <div class="add-status">
