@@ -38,13 +38,11 @@ function renameCard(cardId) {
 }
 
 function dragCard(cardId) {
-    let boxes = [];
+    let boxes;
     let nextElement;
-    const statuses = [...document.querySelectorAll(`.status`)];
-    const statusContainer = document.querySelector(`.card[data-card-id="${cardId}"]`).parentElement;
-    statuses.forEach((e) => {
-        boxes.push(e.getBoundingClientRect());
-    });
+    let statuses;
+    let cardContainer;
+    const audio = new Audio('/static/css/sad_violin.mp3');
     const dragToNowhere = (e) => {
         const draggable = document.querySelector('.dragging');
         let x = e.clientX, y = e.clientY;
@@ -55,15 +53,23 @@ function dragCard(cardId) {
             }
         }
         if (nextElement) {
-            statusContainer.insertBefore(draggable, nextElement);
+            cardContainer.insertBefore(draggable, nextElement);
         } else {
-            statusContainer.appendChild(draggable);
+            cardContainer.appendChild(draggable);
+            console.log(x, y)
         }
     }
 
     domManager.addEventListener(`.card[data-card-id="${cardId}"]`, "dragstart", (e) => {
         e.currentTarget.classList.add('dragging');
+        audio.play().then();
         nextElement = document.querySelector(`.card[data-card-id="${cardId}"]`).nextElementSibling;
+        statuses = [...document.querySelectorAll(`.status`)];
+        cardContainer = document.querySelector(`.card[data-card-id="${cardId}"]`).parentElement;
+        boxes = [];
+        statuses.forEach((e) => {
+            boxes.push(e.getBoundingClientRect());
+        });
         document.addEventListener('dragover', dragToNowhere)
     });
 
