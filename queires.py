@@ -51,7 +51,7 @@ def get_boards(user_id=None):
         """
         SELECT * FROM boards
         WHERE user_id = %(user_id)s::int OR user_id IS NULL
-        ORDER BY id
+        ORDER BY user_id, id
         ;
         """,
         {"user_id": user_id}

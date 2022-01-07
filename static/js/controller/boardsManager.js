@@ -29,8 +29,6 @@ export let boardsManager = {
                 board.querySelector(".board-header").classList.add("private");
             }
         }
-
-
     }
 };
 
