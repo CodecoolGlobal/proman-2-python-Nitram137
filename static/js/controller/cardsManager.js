@@ -56,7 +56,6 @@ function dragCard(cardId) {
             cardContainer.insertBefore(draggable, nextElement);
         } else {
             cardContainer.appendChild(draggable);
-            console.log(x, y)
         }
     }
 

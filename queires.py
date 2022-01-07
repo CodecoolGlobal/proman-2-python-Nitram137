@@ -121,7 +121,7 @@ def insert_new_card(card_title, board_id, status_id, card_position):
         """
         UPDATE cards
         SET card_order = card_order + 1
-        WHERE card_order >= %(card_position)s AND status_id = %(status_id)s;
+        WHERE card_order >= %(card_position)s::int AND status_id = %(status_id)s::int;
         """, {"card_position": card_position, "status_id": status_id}
     )
     return data_manager.execute_select(
@@ -141,14 +141,16 @@ def replace_card(card_id, board_id, status_id, new_position):
 
     data_manager.execute_insert("""
         UPDATE cards
-        SET card_order = %(new_position)s, board_id = %(board_id)s, status_id = %(status_id)s
-        WHERE id = %(card_id)s;
-        """, {"card_id": card_id, "board_id": board_id, "status_id": status_id, "new_position": new_position})
+        SET card_order = card_order + 1
+        WHERE card_order >= %(card_position)s::int AND status_id = %(status_id)s::int;
+        """, {"card_position": new_position, "status_id": status_id})
+
     data_manager.execute_insert("""
         UPDATE cards
-        SET card_order = card_order + 1
-        WHERE card_order >= %(card_position)s AND status_id = %(status_id)s;
-        """, {"card_position": new_position, "status_id": status_id})
+        SET card_order = %(new_position)s, board_id = %(board_id)s, status_id = %(status_id)s
+        WHERE id = %(card_id)s::int;
+        """, {"card_id": card_id, "board_id": board_id, "status_id": status_id, "new_position": new_position})
+
 
 
 def insert_new_board(board_name, user_id=None):
