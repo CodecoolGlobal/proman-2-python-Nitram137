@@ -38,11 +38,43 @@ function renameCard(cardId) {
 }
 
 function dragCard(cardId) {
+    let boxes;
+    let nextElement;
+    let statuses;
+    let cardContainer;
+    const audio = new Audio('/static/css/sad_violin.mp3');
+    const dragToNowhere = (e) => {
+        const draggable = document.querySelector('.dragging');
+        let x = e.clientX, y = e.clientY;
+
+        for (let box of boxes) {
+            if (box.top < y && box.bottom > y && box.left < x && box.right > x) {
+                return;
+            }
+        }
+        if (nextElement) {
+            cardContainer.insertBefore(draggable, nextElement);
+        } else {
+            cardContainer.appendChild(draggable);
+            console.log(x, y)
+        }
+    }
+
     domManager.addEventListener(`.card[data-card-id="${cardId}"]`, "dragstart", (e) => {
         e.currentTarget.classList.add('dragging');
+        audio.play().then();
+        nextElement = document.querySelector(`.card[data-card-id="${cardId}"]`).nextElementSibling;
+        statuses = [...document.querySelectorAll(`.status`)];
+        cardContainer = document.querySelector(`.card[data-card-id="${cardId}"]`).parentElement;
+        boxes = [];
+        statuses.forEach((e) => {
+            boxes.push(e.getBoundingClientRect());
+        });
+        document.addEventListener('dragover', dragToNowhere)
     });
+
     domManager.addEventListener(`.card[data-card-id="${cardId}"]`, "dragend", (e) => {
         e.currentTarget.classList.remove('dragging');
+        document.removeEventListener('dragover', dragToNowhere);
     });
 }
-

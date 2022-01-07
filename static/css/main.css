@@ -5,6 +5,10 @@ section {
     background-position-y: top;
 }
 
+.board-body {
+    margin: 0;
+}
+
 
 a {
     color: inherit;
